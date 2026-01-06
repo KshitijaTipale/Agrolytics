@@ -17,6 +17,9 @@ COLUMNS_JSON_PATH = os.path.join(MODEL_DIR, 'model_columns.json')
 model = None
 model_columns = None
 
+# Global variable to store loading error
+load_error = None
+
 try:
     if os.path.exists(MODEL_PATH) and os.path.exists(COLUMNS_JSON_PATH):
         print(f"Loading model from {MODEL_PATH}")
@@ -27,8 +30,10 @@ try:
             
         print("Model and columns loaded successfully.")
     else:
-        print(f"Error: Model files not found at {MODEL_PATH} or {COLUMNS_JSON_PATH}")
+        load_error = f"Files not found. Dir: {os.getcwd()}, Contents: {os.listdir(MODEL_DIR) if os.path.exists(MODEL_DIR) else 'No Dir'}"
+        print(f"Error: {load_error}")
 except Exception as e:
+    load_error = str(e)
     print(f"Error loading model: {e}")
 
 def prepare_input_vector(input_data, columns):
@@ -78,7 +83,7 @@ def health_check():
 @app.route('/api/predict', methods=['POST'])
 def predict():
     if not model:
-        return jsonify({"error": "Model not loaded"}), 500
+        return jsonify({"error": "Model not loaded", "details": load_error, "path": MODEL_PATH}), 500
 
     try:
         data = request.json
