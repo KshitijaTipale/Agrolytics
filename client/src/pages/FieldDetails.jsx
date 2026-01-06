@@ -132,13 +132,13 @@ const FieldDetails = () => {
         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="menu-btn">
             ☰
         </button>
-        <span className="mobile-title">Agrolytics</span>
+        <img src="/agrolytics.png" alt="Agrolytics" style={{ height: '32px', objectFit: 'contain' }} />
       </div>
 
       {/* Sidebar / Mobile Menu */}
       <aside className={`sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-            <h2>Agrolytics 🌾</h2>
+            <img src="/agrolytics.png" alt="Agrolytics" style={{ height: '40px', objectFit: 'contain' }} />
         </div>
         
         <nav className="sidebar-nav">
