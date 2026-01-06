@@ -1,17 +1,21 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/server/app" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/((?!api/.*).*)", "destination": "/index.html" }
   ],
   "builds": [
     {
-      "src": "server/app.py",
+      "src": "api/health.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/predict.py",
       "use": "@vercel/python"
     },
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": { "distDir": "client/dist" }
     }
   ]
 }
