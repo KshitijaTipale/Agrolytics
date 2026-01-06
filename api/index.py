@@ -71,11 +71,11 @@ def prepare_input_vector(input_data, columns):
                 
     return [vector]
 
-@app.route('/health', methods=['GET'])
+@app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "healthy", "model_loaded": model is not None})
 
-@app.route('/predict', methods=['POST'])
+@app.route('/api/predict', methods=['POST'])
 def predict():
     if not model:
         return jsonify({"error": "Model not loaded"}), 500
