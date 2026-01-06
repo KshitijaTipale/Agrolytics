@@ -11,8 +11,8 @@ CORS(app)  # Enable CORS for all routes
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Pointing to the existing model directory relative to the new server directory
-MODEL_DIR = os.path.join(BASE_DIR, '..', 'Sugarcane_Yeild_Prediction_Model', 'models')
+# Pointing to the models directory inside the server folder for Vercel deployment
+MODEL_DIR = os.path.join(BASE_DIR, 'models')
 MODEL_PATH = os.path.join(MODEL_DIR, 'sugarcane_yield_model.pkl')
 COLUMNS_PATH = os.path.join(MODEL_DIR, 'model_columns.pkl')
 
