@@ -1,42 +1,61 @@
-# How to Run Agrolytics Locally
+# How to Run Agrolytics Locally (Hybrid Mode)
 
-Since the project structure has changed (Frontend at Root, Backend in `api/`), here is how to run the application manually on your machine.
+Because we split the project into a **Frontend** (Vercel) and **Model Engine** (Hugging Face) to solve the size limit, running locally now involves starting **3 separate terminals**.
 
 ## Prerequisites
 - **Node.js** (Installed)
 - **Python 3.x** (Installed)
 
-## Step 1: Start the Backend (API)
-Open a terminal and run the Python Flask server:
+---
+
+## Terminal 1: The Model Engine (Simulating Hugging Face)
+This runs the heavy XGBoost model locally, just like Hugging Face will do in the cloud.
 
 ```powershell
-# 1. Navigate to the api directory
-cd api
+# 1. Go to the Hugging Face space folder
+cd hf_space
 
-# 2. Install dependencies (if not already installed)
+# 2. Install heavy dependencies (only needed once)
 pip install -r requirements.txt
 
-# 3. Run the server
-python index.py
+# 3. Run the Model Server (Runs on port 7860)
+python app.py
 ```
-> **Success**: You should see `Running on http://127.0.0.1:5000`
+> **Keep this running.** It listens on `http://localhost:7860`.
 
-## Step 2: Start the Frontend (Client)
-Open a **new terminal window** (keep the backend running) and start the React app from the project root:
+---
+
+## Terminal 2: The API Proxy (Simulating Vercel Backend)
+This runs the lightweight API that forwards requests from the frontend to the Model Engine.
 
 ```powershell
-# 1. Navigate to project root (if not already there)
-# (If you are in api folder, go back up)
+# 1. Open a NEW terminal and go to api folder
+cd api
+
+# 2. Install proxy dependencies
+pip install -r requirements.txt
+
+# 3. Set the Environment Variable to point to LOCAL Model Engine
+$env:HF_API_URL = "http://localhost:7860"
+
+# 4. Run the Proxy Server (Runs on port 5000)
+python index.py
+```
+> **Keep this running.** It listens on `http://localhost:5000` and forwards traffic to port 7860.
+
+---
+
+## Terminal 3: The Frontend (React)
+This runs the user interface.
+
+```powershell
+# 1. Open a NEW terminal at Project Root
+# (If in api or hf_space, go back up)
 cd ..
 
-# 2. Install dependencies (since we moved files, it's good to ensure everything is linked)
-npm install
-
-# 3. Start the dev server
+# 2. Start the Frontend
 npm run dev
 ```
-> **Success**: You should see `Local: http://localhost:5173/`
-
-## Step 3: Open in Browser
-- Go to [http://localhost:5173](http://localhost:5173).
-- The app should load, and API requests (like Login or Prediction) will automatically be proxied to your Python server running on port 5000.
+> **Success**: Open `http://localhost:5173`.
+> When you click "Predict", the request flows:
+> **React (5173)** -> **Proxy (5000)** -> **Model Engine (7860)**.
