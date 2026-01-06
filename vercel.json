@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "client/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/((?!api/.*).*)", "destination": "/index.html" }
@@ -15,7 +16,7 @@
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "client/dist" }
+      "config": { "distDir": "dist" }
     }
   ]
 }
