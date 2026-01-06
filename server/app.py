@@ -1,9 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pandas as pd
 import joblib
+import json
 import os
-import sys
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -11,25 +10,67 @@ CORS(app)  # Enable CORS for all routes
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Pointing to the models directory inside the server folder for Vercel deployment
 MODEL_DIR = os.path.join(BASE_DIR, 'models')
 MODEL_PATH = os.path.join(MODEL_DIR, 'sugarcane_yield_model.pkl')
-COLUMNS_PATH = os.path.join(MODEL_DIR, 'model_columns.pkl')
+COLUMNS_JSON_PATH = os.path.join(MODEL_DIR, 'model_columns.json')
 
 # Load Model
 model = None
 model_columns = None
 
 try:
-    if os.path.exists(MODEL_PATH) and os.path.exists(COLUMNS_PATH):
+    if os.path.exists(MODEL_PATH) and os.path.exists(COLUMNS_JSON_PATH):
         print(f"Loading model from {MODEL_PATH}")
         model = joblib.load(MODEL_PATH)
-        model_columns = joblib.load(COLUMNS_PATH)
-        print("Model loaded successfully.")
+        
+        with open(COLUMNS_JSON_PATH, 'r') as f:
+            model_columns = json.load(f)
+            
+        print("Model and columns loaded successfully.")
     else:
-        print(f"Error: Model files not found at {MODEL_PATH} or {COLUMNS_PATH}")
+        print(f"Error: Model files not found at {MODEL_PATH} or {COLUMNS_JSON_PATH}")
 except Exception as e:
     print(f"Error loading model: {e}")
+
+def prepare_input_vector(input_data, columns):
+    """
+    Manually construct the feature vector (One-Hot Encoding) to avoid needing pandas.
+    """
+    vector = [0] * len(columns)
+    col_dict = {col: i for i, col in enumerate(columns)}
+    
+    # Numerical Fields
+    numerical_cols = [
+        'Latitude', 'Longitude', 'Area_Harvested_Ha', 'Avg_NDVI', 'Avg_EVI',
+        'Avg_LST_Celsius', 'Avg_Max_Temp_Celsius', 'Avg_Min_Temp_Celsius',
+        'Avg_Humidity_Percent', 'Solar_Radiation_kWh', 'Accumulated_Rainfall_mm'
+    ]
+    
+    for col in numerical_cols:
+        if col in col_dict and col in input_data:
+            try:
+                vector[col_dict[col]] = float(input_data.get(col, 0))
+            except:
+                vector[col_dict[col]] = 0.0
+
+    # Categorical Fields (One-Hot)
+    # These must match exactly how get_dummies names columns: "Column_Value"
+    categorical_map = {
+        'Taluka': 'Taluka',
+        'Season': 'Season',
+        'Cane_Variety': 'Cane_Variety',
+        'Soil_Type': 'Soil_Type',
+        'Irrigation_Method': 'Irrigation_Method'
+    }
+    
+    for field, prefix in categorical_map.items():
+        val = input_data.get(field)
+        if val:
+            dummy_col = f"{prefix}_{val}"
+            if dummy_col in col_dict:
+                vector[col_dict[dummy_col]] = 1
+                
+    return [vector]
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -42,10 +83,8 @@ def predict():
 
     try:
         data = request.json
-        # Expected input keys should match what the model expects.
-        # Based on previous app.py, the model expects a DataFrame with specific columns.
         
-        # Construct DataFrame from input
+        # Prepare Input
         input_data = {
             'Taluka': data.get('Taluka'),
             'Season': data.get('Season'),
@@ -65,22 +104,11 @@ def predict():
             'Accumulated_Rainfall_mm': data.get('Accumulated_Rainfall_mm')
         }
 
-        # Validate required fields (basic check)
-        if None in input_data.values():
-             return jsonify({"error": "Missing input fields", "received": input_data}), 400
-
-        input_df = pd.DataFrame([input_data])
+        # Vectorize
+        input_vector = prepare_input_vector(input_data, model_columns)
         
-        # Preprocessing (One-Hot Encoding)
-        # We need to reproduce the exact dummy columns as training.
-        # This is done by get_dummies and then reindexing with model_columns.
-        categorical_cols = ['Taluka', 'Season', 'Cane_Variety', 'Soil_Type', 'Irrigation_Method']
-        input_df_encoded = pd.get_dummies(input_df, columns=categorical_cols)
-        
-        # Reindex to match model columns, filling missing with 0
-        input_df_final = input_df_encoded.reindex(columns=model_columns, fill_value=0)
-        
-        prediction = float(model.predict(input_df_final)[0])
+        # Predict
+        prediction = float(model.predict(input_vector)[0])
         
         return jsonify({
             "predicted_yield": prediction,
@@ -88,6 +116,8 @@ def predict():
         })
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
