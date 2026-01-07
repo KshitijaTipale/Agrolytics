@@ -1257,3 +1257,26 @@ a {
     min-height: 250px;
   }
 }
+
+/* Map Utilities */
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.btn-secondary:hover:not(:disabled) {
+  background: #f1f1f1;
+}
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.leaflet-container {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}

@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
 import FieldConfigurationForm from '../components/FieldConfigurationForm'
 import PredictionPanel from '../components/PredictionPanel'
+import FieldMap from '../components/FieldMap'
 
 const FieldDetails = () => {
   const { id } = useParams()
@@ -21,6 +22,7 @@ const FieldDetails = () => {
   const navItems = [
     { id: 'main-menu', label: '← All Fields', path: '/farmer' },
     { id: 'dashboard', label: 'Field Dashboard', onClick: () => setActiveTab('dashboard'), active: activeTab === 'dashboard' },
+    { id: 'map', label: 'Map Your Field', onClick: () => setActiveTab('map'), active: activeTab === 'map' },
     { id: 'details', label: 'Configuration', onClick: () => setActiveTab('details'), active: activeTab === 'details' },
   ]
 
@@ -112,6 +114,60 @@ const FieldDetails = () => {
     }
   }
 
+  const handleSaveMap = async ({ coordinates, acreage, center }) => {
+    setSaving(true)
+    try {
+        // 1. Update Field Table with new coordinates and area
+        const updates = { 
+            coordinates: coordinates,
+            area_size: acreage 
+        };
+        
+        await supabase.from('fields').update(updates).eq('id', id);
+        
+        // 2. Reverse Geocode for Taluka (if center available)
+        let detectedTaluka = null;
+        if (center) {
+            try {
+                // Nominatim Reverse Geocoding
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${center[0]}&lon=${center[1]}`);
+                const data = await res.json();
+                
+                // Naive Taluka detection from address components
+                // Nominatim usually returns 'county' or 'state_district' or 'city'
+                const addr = data.address;
+                const talukaList = ['Akole', 'Sangamner', 'Kopargaon', 'Rahata', 'Shrirampur', 'Nevasa', 'Shevgaon', 'Pathardi', 'Jamkhed', 'Karjat', 'Shrigonda', 'Parner', 'Ahmednagar', 'Rahuri'];
+                
+                // Check all address fields
+                const addressValues = Object.values(addr);
+                detectedTaluka = talukaList.find(t => addressValues.some(v => typeof v === 'string' && v.includes(t)));
+                
+                if (detectedTaluka) {
+                    // Update field_details if we found a taluka
+                    await supabase.from('field_details').upsert({
+                        field_id: id,
+                        taluka: detectedTaluka
+                    }, { onConflict: 'field_id' });
+                }
+            } catch (err) {
+                console.error("Reverse geocoding failed", err);
+            }
+        }
+
+        alert(`Field boundary saved! Area: ${acreage} Acres. ${detectedTaluka ? 'Detected Taluka: ' + detectedTaluka : ''}`);
+        
+        // 3. Refresh and switch back to Configuration
+        await fetchFieldDetails();
+        setActiveTab('details'); // Switch back to config form
+        
+    } catch (error) {
+        console.error('Save map error:', error)
+        alert('Failed to save map.')
+    } finally {
+        setSaving(false)
+    }
+  }
+
   const handleLogout = async () => {
     await supabase.auth.signOut()
     navigate('/')
@@ -192,6 +248,19 @@ const FieldDetails = () => {
                 <div className="dashboard-container">
                     <PredictionPanel details={details} />
                 </div>
+            ) : activeTab === 'map' ? (
+                /* Map View */
+                <div className="bento-section-card" style={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
+                    <h3>Map Your Field</h3>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                        Draw your field boundaries to calculate exact acreage.
+                    </p>
+                    <FieldMap 
+                        initialCoordinates={field.coordinates} 
+                        onSave={handleSaveMap}
+                        saving={saving}
+                    />
+                </div>
             ) : (
                 /* Configuration View */
                 <div className="bento-section-card details-card">
@@ -204,6 +273,7 @@ const FieldDetails = () => {
                         initialData={details} 
                         onSave={handleSave}
                         saving={saving}
+                        onFindOnMap={() => setActiveTab('map')}
                     />
                 </div>
             )}
