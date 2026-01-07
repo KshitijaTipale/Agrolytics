@@ -6,7 +6,7 @@ const VARIETIES = ['CoM 0265', 'Co 86032', 'Co 92005', 'VSI 434']
 const SOIL_TYPES = ['Black Cotton', 'Clay Loam', 'Sandy Loam', 'Medium Black']
 const IRRIGATION_METHODS = ['Drip', 'Flood', 'Rainfed']
 
-const FieldConfigurationForm = ({ initialData, onSave, saving }) => {
+const FieldConfigurationForm = ({ initialData, onSave, saving, onFindOnMap }) => {
   const [formData, setFormData] = useState({
     taluka: '',
     season: '',
@@ -49,10 +49,16 @@ const FieldConfigurationForm = ({ initialData, onSave, saving }) => {
         {/* Taluka */}
         <div className="form-group">
           <label>Taluka</label>
-          <select name="taluka" value={formData.taluka} onChange={handleChange} required>
-            <option value="">Select Taluka</option>
-            {TALUKAS.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+             <select name="taluka" value={formData.taluka} onChange={handleChange} required style={{ flex: 1 }}>
+                <option value="">Select Taluka</option>
+                {TALUKAS.map(t => <option key={t} value={t}>{t}</option>)}
+             </select>
+             <button type="button" onClick={onFindOnMap} className="btn-secondary" style={{ fontSize: '1.2rem'}} title="Find on Map">
+                🗺️
+             </button>
+          </div>
+          <small style={{ color: '#666' }}>Or click map icon to auto-detect.</small>
         </div>
 
         {/* Season */}
@@ -113,6 +119,9 @@ const FieldConfigurationForm = ({ initialData, onSave, saving }) => {
                 name="area_size"
                 value={formData.area_size}
                 onChange={handleChange}
+                readOnly
+                style={{ background: '#f9f9f9', cursor: 'not-allowed' }}
+                title="Use the Map to calculate area automatically"
             />
         </div>
       </div>
