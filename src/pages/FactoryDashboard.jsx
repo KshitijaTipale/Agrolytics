@@ -9,8 +9,9 @@ const FactoryDashboard = () => {
       </div>
 
       <h1 className="page-title">Factory Overview 🏭</h1>
-      
+
       {/* Content cleared as requested. */}
+      {/*I am kshitija */}
       <div style={{ marginTop: '3rem', textAlign: 'center', opacity: 0.5 }}>
         <p>Dashboard is empty.</p>
       </div>
