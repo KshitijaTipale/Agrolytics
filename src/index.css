@@ -1280,3 +1280,21 @@ a {
     height: 100%;
     z-index: 1;
 }
+
+/* Factory Dashboard Grid */
+.dashboard-grid-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  height: 500px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+ 
+ 
+ 
