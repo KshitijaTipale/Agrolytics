@@ -21,7 +21,6 @@ const FarmerAuth = () => {
 
     try {
       if (isLogin) {
-        // Login Logic
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -29,7 +28,6 @@ const FarmerAuth = () => {
         if (error) throw error
         navigate('/farmer')
       } else {
-        // Signup Logic
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -42,7 +40,7 @@ const FarmerAuth = () => {
           },
         })
         if (error) throw error
-        navigate('/farmer') // Or show "Check email" if email confirm is on
+        navigate('/farmer')
       }
     } catch (err) {
       setError(err.message)
@@ -52,97 +50,87 @@ const FarmerAuth = () => {
   }
 
   return (
-    <div className="landing-container" style={{ minHeight: '100vh', justifyContent: 'center' }}>
-        <div className="glass-card" style={{ maxWidth: '400px', width: '100%', padding: '2rem', margin: '0 auto' }}>
-            
-            <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', fontSize: '1.8rem' }}>
-                {isLogin ? 'Farmer Login' : 'Create Account'}
-            </h2>
+    <div className="auth-page">
+      {/* Video Background */}
+      <div className="auth-video-wrap">
+        <video autoPlay loop muted playsInline className="auth-video">
+          <source src="/Works.mp4" type="video/mp4" />
+        </video>
+        <div className="auth-video-overlay" />
+      </div>
 
-            {error && <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
-
-            <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                
-                {!isLogin && (
-                    <>
-                        <input 
-                            type="text" 
-                            placeholder="Full Name" 
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            style={{ padding: '0.8rem', borderRadius: '12px', border: '1px solid #ccc' }}
-                        />
-                        <input 
-                            type="tel" 
-                            placeholder="Mobile Number" 
-                            value={mobile}
-                            onChange={(e) => setMobile(e.target.value)}
-                            required
-                            style={{ padding: '0.8rem', borderRadius: '12px', border: '1px solid #ccc' }}
-                        />
-                    </>
-                )}
-
-                <input 
-                    type="email" 
-                    placeholder="Email Address" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{ padding: '0.8rem', borderRadius: '12px', border: '1px solid #ccc' }}
-                />
-                
-                <input 
-                    type="password" 
-                    placeholder="Password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    style={{ padding: '0.8rem', borderRadius: '12px', border: '1px solid #ccc' }}
-                />
-
-                <button 
-                    type="submit" 
-                    disabled={loading}
-                    style={{
-                        padding: '1rem',
-                        borderRadius: '12px',
-                        border: 'none',
-                        background: 'var(--primary)',
-                        color: 'white',
-                        fontSize: '1rem',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        marginTop: '0.5rem'
-                    }}
-                >
-                    {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
-                </button>
-            </form>
-
-            <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-                <span style={{ color: 'var(--text-secondary)' }}>
-                    {isLogin ? "Don't have an account? " : "Already have an account? "}
-                </span>
-                <button 
-                    onClick={() => setIsLogin(!isLogin)}
-                    style={{ 
-                        background: 'none', 
-                        border: 'none', 
-                        color: 'var(--primary)', 
-                        fontWeight: '600',
-                        textDecoration: 'underline'
-                    }}
-                >
-                    {isLogin ? 'Sign Up' : 'Login'}
-                </button>
-            </div>
-            
-            <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-                <Link to="/" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>← Back to Home</Link>
-            </div>
+      {/* Auth Card */}
+      <div className="auth-card">
+        <div className="auth-logo-group">
+          <img src="/agrolytics.png" alt="Agrolytics" className="auth-logo" />
+          <span className="auth-brand">Agrolytics</span>
         </div>
+
+        <h2 className="auth-title">
+          {isLogin ? 'Welcome Back' : 'Create Account'}
+        </h2>
+        <p className="auth-subtitle">
+          {isLogin ? 'Sign in to access your farm dashboard' : 'Join Agrolytics for smart yield predictions'}
+        </p>
+
+        {error && <div className="auth-error">{error}</div>}
+
+        <form onSubmit={handleAuth} className="auth-form">
+          {!isLogin && (
+            <>
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="auth-input"
+              />
+              <input
+                type="tel"
+                placeholder="Mobile Number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                required
+                className="auth-input"
+              />
+            </>
+          )}
+
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="auth-input"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="auth-input"
+          />
+
+          <button type="submit" disabled={loading} className="auth-submit-btn">
+            {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
+          </button>
+        </form>
+
+        <div className="auth-toggle">
+          <span>{isLogin ? "Don't have an account? " : "Already have an account? "}</span>
+          <button onClick={() => setIsLogin(!isLogin)} className="auth-toggle-btn">
+            {isLogin ? 'Sign Up' : 'Login'}
+          </button>
+        </div>
+
+        <div className="auth-back">
+          <Link to="/">← Back to Home</Link>
+        </div>
+      </div>
     </div>
   )
 }
