@@ -13,7 +13,7 @@ const FactoryDashboard = () => {
     <div className="dashboard-container">
       <div className="dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Factory Portal</span>
-        <button 
+        <button
           onClick={handleLogout}
           style={{
             background: 'var(--surface-card)',
@@ -34,7 +34,7 @@ const FactoryDashboard = () => {
       {/* Content cleared as requested. */}
       {/*I am kshitija */}
       <div style={{ marginTop: '3rem', textAlign: 'center', opacity: 0.5 }}>
-        <p>Dashboard is empty.</p>
+        <p>Dashboard is under development.</p>
       </div>
     </div>
   )
