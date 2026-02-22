@@ -10,32 +10,30 @@ import {
   MapPin,
   Calendar
 } from 'lucide-react';
+import talukaStats from '../data/taluka_stats.json';
+
+// Build weather data from real dataset averages (taluka_stats.json)
+const getWeatherForTaluka = (taluka) => {
+  const s = talukaStats[taluka];
+  if (!s) return { Accumulated_Rainfall_mm: 500, Avg_NDVI: 0.65, Solar_Radiation_kWh: 5.7, Avg_Humidity_Percent: 62, Avg_Max_Temp_Celsius: 33, Avg_Min_Temp_Celsius: 20, Latitude: 19.09, Longitude: 74.74 };
+  return {
+    Accumulated_Rainfall_mm: s.avgRainfall,
+    Avg_NDVI: s.avgNDVI,
+    Solar_Radiation_kWh: s.avgSolarRadiation,
+    Avg_Humidity_Percent: s.avgHumidity,
+    Avg_Max_Temp_Celsius: s.avgMaxTemp,
+    Avg_Min_Temp_Celsius: s.avgMinTemp,
+    Latitude: 19.09,
+    Longitude: 74.74
+  };
+};
 
 const PredictionPanel = ({ details }) => {
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Mock Weather Data (Taluka-specific averages)
-  const TALUKA_WEATHER_DATA = {
-    'Akole': { Accumulated_Rainfall_mm: 1100.0, Avg_NDVI: 0.85, Solar_Radiation_kWh: 5.2, Avg_Humidity_Percent: 65.0, Avg_Max_Temp_Celsius: 30.0, Avg_Min_Temp_Celsius: 18.0, Latitude: 19.54, Longitude: 74.02 },
-    'Sangamner': { Accumulated_Rainfall_mm: 650.0, Avg_NDVI: 0.75, Solar_Radiation_kWh: 5.5, Avg_Humidity_Percent: 55.0, Avg_Max_Temp_Celsius: 32.0, Avg_Min_Temp_Celsius: 20.0, Latitude: 19.57, Longitude: 74.21 },
-    'Kopargaon': { Accumulated_Rainfall_mm: 500.0, Avg_NDVI: 0.70, Solar_Radiation_kWh: 5.8, Avg_Humidity_Percent: 50.0, Avg_Max_Temp_Celsius: 33.0, Avg_Min_Temp_Celsius: 21.0, Latitude: 19.89, Longitude: 74.48 },
-    'Rahata': { Accumulated_Rainfall_mm: 520.0, Avg_NDVI: 0.72, Solar_Radiation_kWh: 5.7, Avg_Humidity_Percent: 52.0, Avg_Max_Temp_Celsius: 33.0, Avg_Min_Temp_Celsius: 21.0, Latitude: 19.65, Longitude: 74.48 },
-    'Shrirampur': { Accumulated_Rainfall_mm: 530.0, Avg_NDVI: 0.73, Solar_Radiation_kWh: 5.7, Avg_Humidity_Percent: 53.0, Avg_Max_Temp_Celsius: 33.0, Avg_Min_Temp_Celsius: 21.0, Latitude: 19.62, Longitude: 74.66 },
-    'Nevasa': { Accumulated_Rainfall_mm: 550.0, Avg_NDVI: 0.70, Solar_Radiation_kWh: 5.8, Avg_Humidity_Percent: 50.0, Avg_Max_Temp_Celsius: 34.0, Avg_Min_Temp_Celsius: 22.0, Latitude: 19.56, Longitude: 75.00 },
-    'Shevgaon': { Accumulated_Rainfall_mm: 540.0, Avg_NDVI: 0.65, Solar_Radiation_kWh: 6.0, Avg_Humidity_Percent: 48.0, Avg_Max_Temp_Celsius: 35.0, Avg_Min_Temp_Celsius: 23.0, Latitude: 19.34, Longitude: 75.22 },
-    'Pathardi': { Accumulated_Rainfall_mm: 560.0, Avg_NDVI: 0.60, Solar_Radiation_kWh: 6.1, Avg_Humidity_Percent: 45.0, Avg_Max_Temp_Celsius: 35.0, Avg_Min_Temp_Celsius: 23.0, Latitude: 19.17, Longitude: 75.18 },
-    'Jamkhed': { Accumulated_Rainfall_mm: 600.0, Avg_NDVI: 0.55, Solar_Radiation_kWh: 6.2, Avg_Humidity_Percent: 45.0, Avg_Max_Temp_Celsius: 36.0, Avg_Min_Temp_Celsius: 24.0, Latitude: 18.72, Longitude: 75.32 },
-    'Karjat': { Accumulated_Rainfall_mm: 500.0, Avg_NDVI: 0.50, Solar_Radiation_kWh: 6.3, Avg_Humidity_Percent: 40.0, Avg_Max_Temp_Celsius: 37.0, Avg_Min_Temp_Celsius: 24.0, Latitude: 18.55, Longitude: 75.00 },
-    'Shrigonda': { Accumulated_Rainfall_mm: 550.0, Avg_NDVI: 0.65, Solar_Radiation_kWh: 6.0, Avg_Humidity_Percent: 50.0, Avg_Max_Temp_Celsius: 35.0, Avg_Min_Temp_Celsius: 22.0, Latitude: 18.61, Longitude: 74.69 },
-    'Parner': { Accumulated_Rainfall_mm: 580.0, Avg_NDVI: 0.68, Solar_Radiation_kWh: 5.8, Avg_Humidity_Percent: 55.0, Avg_Max_Temp_Celsius: 32.0, Avg_Min_Temp_Celsius: 20.0, Latitude: 19.00, Longitude: 74.44 },
-    'Ahmednagar': { Accumulated_Rainfall_mm: 600.0, Avg_NDVI: 0.70, Solar_Radiation_kWh: 5.6, Avg_Humidity_Percent: 58.0, Avg_Max_Temp_Celsius: 32.0, Avg_Min_Temp_Celsius: 21.0, Latitude: 19.09, Longitude: 74.74 },
-    'Rahuri': { Accumulated_Rainfall_mm: 580.0, Avg_NDVI: 0.75, Solar_Radiation_kWh: 5.7, Avg_Humidity_Percent: 60.0, Avg_Max_Temp_Celsius: 33.0, Avg_Min_Temp_Celsius: 21.0, Latitude: 19.39, Longitude: 74.65 },
-  };
-
-  const DEFAULT_WEATHER = TALUKA_WEATHER_DATA['Ahmednagar'];
-  const currentWeather = details ? (TALUKA_WEATHER_DATA[details.taluka] || DEFAULT_WEATHER) : DEFAULT_WEATHER;
+  const currentWeather = details ? getWeatherForTaluka(details.taluka) : getWeatherForTaluka('Ahmednagar');
 
   useEffect(() => {
     if (details) validateAndFetch();
@@ -58,7 +56,7 @@ const PredictionPanel = ({ details }) => {
     setLoading(true);
     setError(null);
     try {
-      const selectedWeather = TALUKA_WEATHER_DATA[details.taluka] || DEFAULT_WEATHER;
+      const selectedWeather = getWeatherForTaluka(details.taluka);
       const completeWeather = {
           ...selectedWeather,
           Avg_EVI: selectedWeather.Avg_NDVI * 0.6, 
