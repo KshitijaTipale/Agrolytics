@@ -37,6 +37,23 @@ def predict():
         
         # Return whatever HF returns
         return jsonify(response.json()), response.status_code
+    except Exception as e:
+        return jsonify({"error": "Proxy Error", "details": str(e)}), 502
+
+@app.route('/api/predict-harvest', methods=['POST'])
+def predict_harvest():
+    if not HF_API_URL:
+        return jsonify({"error": "HF_API_URL environment variable not set"}), 500
+
+    try:
+        # Forward the JSON body to Hugging Face
+        payload = request.json
+        hf_endpoint = f"{HF_API_URL}/predict-harvest"
+        
+        response = requests.post(hf_endpoint, json=payload)
+        
+        # Return whatever HF returns
+        return jsonify(response.json()), response.status_code
 
     except Exception as e:
         return jsonify({"error": "Proxy Error", "details": str(e)}), 502

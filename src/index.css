@@ -2274,4 +2274,173 @@ html {
 }
 .view-all-btn:hover {
   background: #e0e0e0;
+/* --- Factory Dashboard: Command Center Aesthetics --- */
+
+.command-center-bg {
+  background: linear-gradient(135deg, #0b0f19 0%, #1a2333 100%);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+.command-center-bg .dashboard-container {
+  padding-bottom: 3rem;
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  color: #f8fafc;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.running {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.maintenance {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-indicator.running {
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.select-modern {
+  background: rgba(15, 23, 42, 0.6);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.select-modern:focus {
+  border-color: #3b82f6;
+}
+
+.select-modern option {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+/* Progress Bar Shell */
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-bar-fill.warning {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.urgent-alert-card {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-left: 4px solid #ef4444 !important;
+}
+
+.priority-queue-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 12px;
+  margin-bottom: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+
+.priority-queue-item:hover {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.action-btn-urgent {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn-urgent:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Typography Overrides for Dark Mode */
+.command-center-bg h1, 
+.command-center-bg h2, 
+.command-center-bg h3,
+.command-center-bg .card-label {
+  color: #f8fafc;
+}
+
+.command-center-bg .text-muted {
+  color: #94a3b8;
+}
+
+.command-center-bg table th {
+  color: #cbd5e1 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.command-center-bg table td {
+  color: #94a3b8 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.command-center-bg table td .text-primary {
+  color: #f8fafc !important;
 }

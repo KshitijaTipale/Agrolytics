@@ -1,0 +1,814 @@
+{
+  "Ahmednagar": {
+    "fieldCount": 711,
+    "avgYield": 130.07,
+    "totalArea": 1931.62,
+    "avgArea": 2.72,
+    "totalEstYield": 251246.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 507.98,
+    "avgHumidity": 62.01,
+    "avgMaxTemp": 33.14,
+    "avgMinTemp": 20.06,
+    "avgSolarRadiation": 5.68,
+    "avgLST": 31.18,
+    "cropHealth": {
+      "excellent": 213,
+      "moderate": 322,
+      "poor": 176,
+      "excellentPct": 30.0,
+      "moderatePct": 45.3,
+      "poorPct": 24.8
+    },
+    "varietyPerformance": {
+      "CoM 0265": 131.89,
+      "Co 86032": 133.66,
+      "VSI 434": 125.82,
+      "Co 92005": 128.79
+    },
+    "seasonPerformance": {
+      "Suru": 108.84,
+      "Adsali": 153.26,
+      "Pre-seasonal": 132.3
+    },
+    "topVariety": "Co 86032",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Sandy Loam": 188,
+      "Black Cotton": 178,
+      "Medium Black": 175,
+      "Clay Loam": 170
+    },
+    "irrigationDistribution": {
+      "Drip": 253,
+      "Rainfed": 245,
+      "Flood": 213
+    },
+    "avgHarvestDuration": 434,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 128.44,
+      "2020": 129.17,
+      "2021": 131.83,
+      "2022": 134.49,
+      "2023": 128.03,
+      "2024": 128.94
+    }
+  },
+  "Akole": {
+    "fieldCount": 710,
+    "avgYield": 136.54,
+    "totalArea": 1949.71,
+    "avgArea": 2.75,
+    "totalEstYield": 266213.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 896.11,
+    "avgHumidity": 75.59,
+    "avgMaxTemp": 33.04,
+    "avgMinTemp": 19.96,
+    "avgSolarRadiation": 5.69,
+    "avgLST": 31.09,
+    "cropHealth": {
+      "excellent": 215,
+      "moderate": 314,
+      "poor": 181,
+      "excellentPct": 30.3,
+      "moderatePct": 44.2,
+      "poorPct": 25.5
+    },
+    "varietyPerformance": {
+      "Co 86032": 137.07,
+      "VSI 434": 132.66,
+      "Co 92005": 135.53,
+      "CoM 0265": 140.19
+    },
+    "seasonPerformance": {
+      "Adsali": 155.62,
+      "Pre-seasonal": 137.74,
+      "Suru": 116.21
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Sandy Loam": 186,
+      "Medium Black": 147,
+      "Black Cotton": 180,
+      "Clay Loam": 197
+    },
+    "irrigationDistribution": {
+      "Flood": 219,
+      "Drip": 234,
+      "Rainfed": 257
+    },
+    "avgHarvestDuration": 432,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 139.17,
+      "2020": 136.09,
+      "2021": 137.59,
+      "2022": 136.96,
+      "2023": 134.46,
+      "2024": 134.54
+    }
+  },
+  "Jamkhed": {
+    "fieldCount": 693,
+    "avgYield": 127.59,
+    "totalArea": 1951.72,
+    "avgArea": 2.82,
+    "totalEstYield": 249020.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 357.28,
+    "avgHumidity": 62.39,
+    "avgMaxTemp": 33.06,
+    "avgMinTemp": 19.99,
+    "avgSolarRadiation": 5.7,
+    "avgLST": 31.11,
+    "cropHealth": {
+      "excellent": 203,
+      "moderate": 311,
+      "poor": 179,
+      "excellentPct": 29.3,
+      "moderatePct": 44.9,
+      "poorPct": 25.8
+    },
+    "varietyPerformance": {
+      "Co 92005": 124.79,
+      "CoM 0265": 130.15,
+      "Co 86032": 128.01,
+      "VSI 434": 127.02
+    },
+    "seasonPerformance": {
+      "Adsali": 149.7,
+      "Suru": 105.92,
+      "Pre-seasonal": 131.09
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Sandy Loam": 174,
+      "Black Cotton": 164,
+      "Medium Black": 173,
+      "Clay Loam": 182
+    },
+    "irrigationDistribution": {
+      "Rainfed": 229,
+      "Drip": 206,
+      "Flood": 258
+    },
+    "avgHarvestDuration": 433,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 124.06,
+      "2020": 128.56,
+      "2021": 130.05,
+      "2022": 127.95,
+      "2023": 128.54,
+      "2024": 126.62
+    }
+  },
+  "Karjat": {
+    "fieldCount": 699,
+    "avgYield": 128.43,
+    "totalArea": 1911.59,
+    "avgArea": 2.73,
+    "totalEstYield": 245506.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 355.16,
+    "avgHumidity": 61.28,
+    "avgMaxTemp": 32.82,
+    "avgMinTemp": 20.0,
+    "avgSolarRadiation": 5.71,
+    "avgLST": 30.87,
+    "cropHealth": {
+      "excellent": 213,
+      "moderate": 304,
+      "poor": 182,
+      "excellentPct": 30.5,
+      "moderatePct": 43.5,
+      "poorPct": 26.0
+    },
+    "varietyPerformance": {
+      "Co 86032": 129.09,
+      "VSI 434": 124.71,
+      "CoM 0265": 134.61,
+      "Co 92005": 126.19
+    },
+    "seasonPerformance": {
+      "Adsali": 148.95,
+      "Suru": 107.84,
+      "Pre-seasonal": 128.32
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Sandy Loam": 177,
+      "Black Cotton": 166,
+      "Medium Black": 175,
+      "Clay Loam": 181
+    },
+    "irrigationDistribution": {
+      "Flood": 241,
+      "Rainfed": 236,
+      "Drip": 222
+    },
+    "avgHarvestDuration": 431,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 126.91,
+      "2020": 130.83,
+      "2021": 132.1,
+      "2022": 129.08,
+      "2023": 126.13,
+      "2024": 125.5
+    }
+  },
+  "Kopargaon": {
+    "fieldCount": 707,
+    "avgYield": 130.28,
+    "totalArea": 1952.95,
+    "avgArea": 2.76,
+    "totalEstYield": 254430.0,
+    "avgNDVI": 0.66,
+    "avgEVI": 0.53,
+    "avgRainfall": 501.68,
+    "avgHumidity": 62.73,
+    "avgMaxTemp": 33.21,
+    "avgMinTemp": 19.92,
+    "avgSolarRadiation": 5.64,
+    "avgLST": 31.22,
+    "cropHealth": {
+      "excellent": 237,
+      "moderate": 319,
+      "poor": 151,
+      "excellentPct": 33.5,
+      "moderatePct": 45.1,
+      "poorPct": 21.4
+    },
+    "varietyPerformance": {
+      "Co 92005": 123.95,
+      "VSI 434": 128.14,
+      "CoM 0265": 136.57,
+      "Co 86032": 132.95
+    },
+    "seasonPerformance": {
+      "Pre-seasonal": 131.08,
+      "Adsali": 151.19,
+      "Suru": 108.99
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Sandy Loam": 173,
+      "Clay Loam": 186,
+      "Medium Black": 177,
+      "Black Cotton": 171
+    },
+    "irrigationDistribution": {
+      "Rainfed": 232,
+      "Flood": 245,
+      "Drip": 230
+    },
+    "avgHarvestDuration": 435,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 130.52,
+      "2020": 129.7,
+      "2021": 131.65,
+      "2022": 127.06,
+      "2023": 134.86,
+      "2024": 127.97
+    }
+  },
+  "Nevasa": {
+    "fieldCount": 739,
+    "avgYield": 130.43,
+    "totalArea": 2020.34,
+    "avgArea": 2.73,
+    "totalEstYield": 263513.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 493.66,
+    "avgHumidity": 61.2,
+    "avgMaxTemp": 32.95,
+    "avgMinTemp": 19.94,
+    "avgSolarRadiation": 5.67,
+    "avgLST": 31.0,
+    "cropHealth": {
+      "excellent": 222,
+      "moderate": 336,
+      "poor": 181,
+      "excellentPct": 30.0,
+      "moderatePct": 45.5,
+      "poorPct": 24.5
+    },
+    "varietyPerformance": {
+      "VSI 434": 126.05,
+      "Co 92005": 129.89,
+      "Co 86032": 129.76,
+      "CoM 0265": 136.01
+    },
+    "seasonPerformance": {
+      "Pre-seasonal": 130.64,
+      "Adsali": 151.69,
+      "Suru": 109.03
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Black Cotton": 172,
+      "Clay Loam": 214,
+      "Medium Black": 169,
+      "Sandy Loam": 184
+    },
+    "irrigationDistribution": {
+      "Rainfed": 241,
+      "Drip": 262,
+      "Flood": 236
+    },
+    "avgHarvestDuration": 431,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 127.37,
+      "2020": 129.81,
+      "2021": 131.18,
+      "2022": 130.94,
+      "2023": 132.67,
+      "2024": 130.63
+    }
+  },
+  "Parner": {
+    "fieldCount": 780,
+    "avgYield": 131.26,
+    "totalArea": 2144.82,
+    "avgArea": 2.75,
+    "totalEstYield": 281529.0,
+    "avgNDVI": 0.66,
+    "avgEVI": 0.53,
+    "avgRainfall": 498.35,
+    "avgHumidity": 62.07,
+    "avgMaxTemp": 33.29,
+    "avgMinTemp": 20.01,
+    "avgSolarRadiation": 5.66,
+    "avgLST": 31.32,
+    "cropHealth": {
+      "excellent": 245,
+      "moderate": 344,
+      "poor": 191,
+      "excellentPct": 31.4,
+      "moderatePct": 44.1,
+      "poorPct": 24.5
+    },
+    "varietyPerformance": {
+      "Co 86032": 132.14,
+      "VSI 434": 129.15,
+      "Co 92005": 128.26,
+      "CoM 0265": 135.13
+    },
+    "seasonPerformance": {
+      "Suru": 108.63,
+      "Adsali": 151.77,
+      "Pre-seasonal": 132.16
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Medium Black": 213,
+      "Black Cotton": 191,
+      "Sandy Loam": 175,
+      "Clay Loam": 201
+    },
+    "irrigationDistribution": {
+      "Flood": 255,
+      "Drip": 270,
+      "Rainfed": 255
+    },
+    "avgHarvestDuration": 430,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 131.5,
+      "2020": 131.23,
+      "2021": 128.78,
+      "2022": 128.43,
+      "2023": 134.4,
+      "2024": 133.09
+    }
+  },
+  "Pathardi": {
+    "fieldCount": 691,
+    "avgYield": 131.95,
+    "totalArea": 1877.18,
+    "avgArea": 2.72,
+    "totalEstYield": 247694.0,
+    "avgNDVI": 0.66,
+    "avgEVI": 0.52,
+    "avgRainfall": 500.11,
+    "avgHumidity": 61.54,
+    "avgMaxTemp": 32.96,
+    "avgMinTemp": 19.96,
+    "avgSolarRadiation": 5.66,
+    "avgLST": 30.99,
+    "cropHealth": {
+      "excellent": 214,
+      "moderate": 298,
+      "poor": 179,
+      "excellentPct": 31.0,
+      "moderatePct": 43.1,
+      "poorPct": 25.9
+    },
+    "varietyPerformance": {
+      "CoM 0265": 138.45,
+      "Co 86032": 131.45,
+      "VSI 434": 130.72,
+      "Co 92005": 127.41
+    },
+    "seasonPerformance": {
+      "Pre-seasonal": 130.27,
+      "Adsali": 151.48,
+      "Suru": 110.95
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Medium Black": 169,
+      "Clay Loam": 161,
+      "Sandy Loam": 186,
+      "Black Cotton": 175
+    },
+    "irrigationDistribution": {
+      "Rainfed": 219,
+      "Flood": 237,
+      "Drip": 235
+    },
+    "avgHarvestDuration": 430,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 132.49,
+      "2020": 133.99,
+      "2021": 135.05,
+      "2022": 130.97,
+      "2023": 130.25,
+      "2024": 128.94
+    }
+  },
+  "Rahata": {
+    "fieldCount": 737,
+    "avgYield": 129.41,
+    "totalArea": 2055.62,
+    "avgArea": 2.79,
+    "totalEstYield": 266018.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.53,
+    "avgRainfall": 498.3,
+    "avgHumidity": 61.7,
+    "avgMaxTemp": 33.06,
+    "avgMinTemp": 19.87,
+    "avgSolarRadiation": 5.67,
+    "avgLST": 31.1,
+    "cropHealth": {
+      "excellent": 225,
+      "moderate": 328,
+      "poor": 184,
+      "excellentPct": 30.5,
+      "moderatePct": 44.5,
+      "poorPct": 25.0
+    },
+    "varietyPerformance": {
+      "CoM 0265": 135.23,
+      "Co 86032": 133.26,
+      "Co 92005": 125.59,
+      "VSI 434": 123.27
+    },
+    "seasonPerformance": {
+      "Pre-seasonal": 129.26,
+      "Suru": 111.48,
+      "Adsali": 149.17
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Black Cotton": 187,
+      "Clay Loam": 192,
+      "Sandy Loam": 169,
+      "Medium Black": 189
+    },
+    "irrigationDistribution": {
+      "Drip": 232,
+      "Rainfed": 251,
+      "Flood": 254
+    },
+    "avgHarvestDuration": 433,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 130.83,
+      "2020": 128.11,
+      "2021": 130.18,
+      "2022": 128.19,
+      "2023": 130.86,
+      "2024": 128.35
+    }
+  },
+  "Rahuri": {
+    "fieldCount": 700,
+    "avgYield": 129.26,
+    "totalArea": 1928.56,
+    "avgArea": 2.76,
+    "totalEstYield": 249286.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.51,
+    "avgRainfall": 499.45,
+    "avgHumidity": 61.45,
+    "avgMaxTemp": 33.05,
+    "avgMinTemp": 19.87,
+    "avgSolarRadiation": 5.66,
+    "avgLST": 31.12,
+    "cropHealth": {
+      "excellent": 214,
+      "moderate": 294,
+      "poor": 192,
+      "excellentPct": 30.6,
+      "moderatePct": 42.0,
+      "poorPct": 27.4
+    },
+    "varietyPerformance": {
+      "Co 92005": 126.29,
+      "CoM 0265": 135.6,
+      "VSI 434": 123.27,
+      "Co 86032": 131.68
+    },
+    "seasonPerformance": {
+      "Suru": 107.43,
+      "Adsali": 151.82,
+      "Pre-seasonal": 128.97
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Black Cotton": 165,
+      "Sandy Loam": 201,
+      "Medium Black": 170,
+      "Clay Loam": 164
+    },
+    "irrigationDistribution": {
+      "Rainfed": 249,
+      "Drip": 220,
+      "Flood": 231
+    },
+    "avgHarvestDuration": 432,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 130.69,
+      "2020": 125.78,
+      "2021": 127.93,
+      "2022": 129.73,
+      "2023": 130.03,
+      "2024": 131.31
+    }
+  },
+  "Sangamner": {
+    "fieldCount": 700,
+    "avgYield": 131.37,
+    "totalArea": 1871.85,
+    "avgArea": 2.67,
+    "totalEstYield": 245905.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 499.12,
+    "avgHumidity": 62.19,
+    "avgMaxTemp": 32.92,
+    "avgMinTemp": 20.07,
+    "avgSolarRadiation": 5.63,
+    "avgLST": 30.95,
+    "cropHealth": {
+      "excellent": 216,
+      "moderate": 314,
+      "poor": 170,
+      "excellentPct": 30.9,
+      "moderatePct": 44.9,
+      "poorPct": 24.3
+    },
+    "varietyPerformance": {
+      "Co 86032": 133.45,
+      "Co 92005": 125.41,
+      "VSI 434": 130.81,
+      "CoM 0265": 135.9
+    },
+    "seasonPerformance": {
+      "Suru": 109.7,
+      "Pre-seasonal": 132.68,
+      "Adsali": 149.55
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Black Cotton": 163,
+      "Sandy Loam": 195,
+      "Medium Black": 172,
+      "Clay Loam": 170
+    },
+    "irrigationDistribution": {
+      "Flood": 236,
+      "Rainfed": 222,
+      "Drip": 242
+    },
+    "avgHarvestDuration": 432,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 129.56,
+      "2020": 132.93,
+      "2021": 130.55,
+      "2022": 130.59,
+      "2023": 133.47,
+      "2024": 131.35
+    }
+  },
+  "Shevgaon": {
+    "fieldCount": 684,
+    "avgYield": 130.87,
+    "totalArea": 1904.12,
+    "avgArea": 2.78,
+    "totalEstYield": 249192.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 500.15,
+    "avgHumidity": 61.5,
+    "avgMaxTemp": 32.99,
+    "avgMinTemp": 19.93,
+    "avgSolarRadiation": 5.68,
+    "avgLST": 31.03,
+    "cropHealth": {
+      "excellent": 216,
+      "moderate": 302,
+      "poor": 166,
+      "excellentPct": 31.6,
+      "moderatePct": 44.2,
+      "poorPct": 24.3
+    },
+    "varietyPerformance": {
+      "CoM 0265": 136.07,
+      "Co 92005": 126.52,
+      "Co 86032": 136.0,
+      "VSI 434": 123.23
+    },
+    "seasonPerformance": {
+      "Suru": 107.49,
+      "Pre-seasonal": 131.74,
+      "Adsali": 151.35
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Clay Loam": 204,
+      "Sandy Loam": 154,
+      "Medium Black": 167,
+      "Black Cotton": 159
+    },
+    "irrigationDistribution": {
+      "Flood": 231,
+      "Drip": 227,
+      "Rainfed": 226
+    },
+    "avgHarvestDuration": 434,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 130.16,
+      "2020": 127.66,
+      "2021": 128.39,
+      "2022": 135.11,
+      "2023": 133.17,
+      "2024": 130.58
+    }
+  },
+  "Shrigonda": {
+    "fieldCount": 730,
+    "avgYield": 130.79,
+    "totalArea": 1997.37,
+    "avgArea": 2.74,
+    "totalEstYield": 261236.0,
+    "avgNDVI": 0.65,
+    "avgEVI": 0.52,
+    "avgRainfall": 500.25,
+    "avgHumidity": 61.83,
+    "avgMaxTemp": 32.89,
+    "avgMinTemp": 19.98,
+    "avgSolarRadiation": 5.67,
+    "avgLST": 30.94,
+    "cropHealth": {
+      "excellent": 228,
+      "moderate": 309,
+      "poor": 193,
+      "excellentPct": 31.2,
+      "moderatePct": 42.3,
+      "poorPct": 26.4
+    },
+    "varietyPerformance": {
+      "Co 92005": 130.46,
+      "VSI 434": 126.97,
+      "Co 86032": 131.26,
+      "CoM 0265": 134.32
+    },
+    "seasonPerformance": {
+      "Pre-seasonal": 131.29,
+      "Adsali": 152.47,
+      "Suru": 107.77
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Medium Black": 188,
+      "Sandy Loam": 175,
+      "Clay Loam": 176,
+      "Black Cotton": 191
+    },
+    "irrigationDistribution": {
+      "Drip": 242,
+      "Flood": 237,
+      "Rainfed": 251
+    },
+    "avgHarvestDuration": 431,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 128.5,
+      "2020": 130.78,
+      "2021": 133.23,
+      "2022": 128.4,
+      "2023": 134.28,
+      "2024": 128.7
+    }
+  },
+  "Shrirampur": {
+    "fieldCount": 719,
+    "avgYield": 131.2,
+    "totalArea": 1976.8,
+    "avgArea": 2.75,
+    "totalEstYield": 259356.0,
+    "avgNDVI": 0.66,
+    "avgEVI": 0.52,
+    "avgRainfall": 499.3,
+    "avgHumidity": 62.4,
+    "avgMaxTemp": 32.96,
+    "avgMinTemp": 19.91,
+    "avgSolarRadiation": 5.65,
+    "avgLST": 30.98,
+    "cropHealth": {
+      "excellent": 217,
+      "moderate": 336,
+      "poor": 166,
+      "excellentPct": 30.2,
+      "moderatePct": 46.7,
+      "poorPct": 23.1
+    },
+    "varietyPerformance": {
+      "Co 86032": 132.78,
+      "CoM 0265": 134.62,
+      "Co 92005": 130.5,
+      "VSI 434": 126.68
+    },
+    "seasonPerformance": {
+      "Suru": 111.29,
+      "Adsali": 152.3,
+      "Pre-seasonal": 129.12
+    },
+    "topVariety": "CoM 0265",
+    "topSeason": "Adsali",
+    "soilDistribution": {
+      "Sandy Loam": 183,
+      "Medium Black": 184,
+      "Clay Loam": 190,
+      "Black Cotton": 162
+    },
+    "irrigationDistribution": {
+      "Flood": 247,
+      "Rainfed": 222,
+      "Drip": 250
+    },
+    "avgHarvestDuration": 434,
+    "minHarvestDuration": 365,
+    "maxHarvestDuration": 500,
+    "yearlyTrend": {
+      "2019": 130.55,
+      "2020": 133.01,
+      "2021": 130.63,
+      "2022": 130.19,
+      "2023": 129.37,
+      "2024": 133.28
+    }
+  }
+}
