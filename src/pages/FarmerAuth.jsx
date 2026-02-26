@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
+import { Brain, Activity, TrendingUp, ShieldCheck, ArrowRight } from 'lucide-react'
 
 const FarmerAuth = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -50,87 +51,250 @@ const FarmerAuth = () => {
   }
 
   return (
-    <div className="auth-page">
-      {/* Video Background */}
-      <div className="auth-video-wrap">
-        <video autoPlay loop muted playsInline className="auth-video">
+    <div className="farmer-auth-split">
+      {/* LEFT SIDE: Value Prop & Video */}
+      <div className="farmer-auth-hero">
+        <video autoPlay loop muted playsInline className="farmer-auth-video">
           <source src="/Works.mp4" type="video/mp4" />
         </video>
-        <div className="auth-video-overlay" />
-      </div>
+        <div className="farmer-auth-overlay"></div>
 
-      {/* Auth Card */}
-      <div className="auth-card">
-        <div className="auth-logo-group">
-          <img src="/agrolytics.png" alt="Agrolytics" className="auth-logo" />
-          <span className="auth-brand">Agrolytics</span>
-        </div>
+        <div className="farmer-auth-hero-content">
+          <div className="auth-logo-group" style={{ justifyContent: 'flex-start', marginBottom: '3rem' }}>
+            <img src="/agrolytics.png" alt="Agrolytics" className="auth-logo" style={{ width: '42px', height: '42px' }} />
+            <span className="auth-brand" style={{ fontSize: '1.5rem', fontWeight: '800' }}>Agrolytics</span>
+          </div>
 
-        <h2 className="auth-title">
-          {isLogin ? 'Welcome Back' : 'Create Account'}
-        </h2>
-        <p className="auth-subtitle">
-          {isLogin ? 'Sign in to access your farm dashboard' : 'Join Agrolytics for smart yield predictions'}
-        </p>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(16,185,129,0.2)', color: '#34d399', padding: '6px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 600, border: '1px solid rgba(16,185,129,0.3)', marginBottom: '1.5rem' }}>
+            <ShieldCheck size={16} /> Trusted by 10,000+ Farmers
+          </div>
 
-        {error && <div className="auth-error">{error}</div>}
+          <h1 className="hero-title" style={{ fontSize: '3.5rem', fontWeight: 800, color: 'white', lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-1px' }}>
+            Intelligent Farming <br />
+            <span style={{ background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Powered by AI.</span>
+          </h1>
+          <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.7)', maxWidth: '400px', lineHeight: 1.6, marginBottom: '3rem' }}>
+            Join our platform to get precise yield predictions, monitor crop health through satellite NDVI data, and optimize your harvest schedule.
+          </p>
 
-        <form onSubmit={handleAuth} className="auth-form">
-          {!isLogin && (
-            <>
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="auth-input"
-              />
-              <input
-                type="tel"
-                placeholder="Mobile Number"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                required
-                className="auth-input"
-              />
-            </>
-          )}
+          <div className="feature-badges" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="feature-badge" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '350px' }}>
+              <div style={{ background: 'rgba(139,92,246,0.2)', padding: '10px', borderRadius: '10px' }}><Brain size={24} color="#a78bfa" /></div>
+              <div>
+                <h4 style={{ margin: '0 0 4px 0', color: 'white', fontSize: '1rem' }}>AI Yield Prediction</h4>
+                <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>Forecast output for every field accurately.</p>
+              </div>
+            </div>
 
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="auth-input"
-          />
+            <div className="feature-badge" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '350px' }}>
+              <div style={{ background: 'rgba(59,130,246,0.2)', padding: '10px', borderRadius: '10px' }}><Activity size={24} color="#60a5fa" /></div>
+              <div>
+                <h4 style={{ margin: '0 0 4px 0', color: 'white', fontSize: '1rem' }}>NDVI Crop Health</h4>
+                <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>Monitor your field's health via satellite.</p>
+              </div>
+            </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="auth-input"
-          />
-
-          <button type="submit" disabled={loading} className="auth-submit-btn">
-            {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
-          </button>
-        </form>
-
-        <div className="auth-toggle">
-          <span>{isLogin ? "Don't have an account? " : "Already have an account? "}</span>
-          <button onClick={() => setIsLogin(!isLogin)} className="auth-toggle-btn">
-            {isLogin ? 'Sign Up' : 'Login'}
-          </button>
-        </div>
-
-        <div className="auth-back">
-          <Link to="/">← Back to Home</Link>
+            <div className="feature-badge" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '350px' }}>
+              <div style={{ background: 'rgba(245,158,11,0.2)', padding: '10px', borderRadius: '10px' }}><TrendingUp size={24} color="#fbbf24" /></div>
+              <div>
+                <h4 style={{ margin: '0 0 4px 0', color: 'white', fontSize: '1rem' }}>Smart Harvest</h4>
+                <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>Optimal queueing for maximum profit.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* RIGHT SIDE: Auth Form */}
+      <div className="farmer-auth-sidebar">
+        <div className="farmer-auth-card">
+          <div className="auth-header-mobile" style={{ display: 'none', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', justifyContent: 'center' }}>
+            <img src="/agrolytics.png" alt="Agrolytics" className="auth-logo" style={{ width: '32px', height: '32px' }} />
+            <span className="auth-brand" style={{ fontSize: '1.2rem', fontWeight: '800', color: 'white' }}>Agrolytics</span>
+          </div>
+
+          <h2 className="auth-title" style={{ textAlign: 'left', marginBottom: '0.5rem', fontSize: '2rem' }}>
+            {isLogin ? 'Welcome Back' : 'Create Account'}
+          </h2>
+          <p className="auth-subtitle" style={{ textAlign: 'left', marginBottom: '2rem', color: '#94a3b8' }}>
+            {isLogin ? 'Sign in to access your farm command center' : 'Join the next generation of smart farming'}
+          </p>
+
+          {error && <div className="auth-error">{error}</div>}
+
+          <form onSubmit={handleAuth} className="auth-form-modern">
+            {!isLogin && (
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem' }}>Full Name</label>
+                  <input type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} required className="auth-input-modern" />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem' }}>Mobile</label>
+                  <input type="tel" placeholder="+91 9876543210" value={mobile} onChange={(e) => setMobile(e.target.value)} required className="auth-input-modern" />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem' }}>Email Address</label>
+              <input type="email" placeholder="john@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="auth-input-modern" />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.5rem' }}>Password</label>
+              <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required className="auth-input-modern" />
+            </div>
+
+            <button type="submit" disabled={loading} className="auth-submit-modern">
+              {loading ? 'Processing...' : (isLogin ? 'Sign In to Dashboard' : 'Create Free Account')} <ArrowRight size={18} />
+            </button>
+          </form>
+
+          <div style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.9rem', color: '#94a3b8' }}>
+            {isLogin ? "Don't have an account? " : "Already have an account? "}
+            <button onClick={() => setIsLogin(!isLogin)} style={{ background: 'none', border: 'none', color: '#10b981', fontWeight: 600, cursor: 'pointer', padding: 0 }}>
+              {isLogin ? 'Sign Up' : 'Log In'}
+            </button>
+          </div>
+
+          <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+            <Link to="/" style={{ color: '#64748b', fontSize: '0.85rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              ← Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        .farmer-auth-split {
+          display: flex;
+          min-height: 100vh;
+          background: #0f172a;
+          font-family: 'Outfit', sans-serif;
+        }
+
+        .farmer-auth-hero {
+          flex: 1;
+          position: relative;
+          display: none;
+          overflow: hidden;
+        }
+
+        .farmer-auth-video {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 0;
+        }
+
+        .farmer-auth-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.6) 100%);
+          z-index: 1;
+        }
+
+        .farmer-auth-hero-content {
+          position: relative;
+          z-index: 2;
+          padding: 4rem;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .farmer-auth-sidebar {
+          width: 100%;
+          max-width: 500px;
+          background: rgba(30,41,59,0.5);
+          backdrop-filter: blur(20px);
+          border-left: 1px solid rgba(255,255,255,0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+          position: relative;
+          z-index: 10;
+        }
+
+        .farmer-auth-card {
+          width: 100%;
+          max-width: 400px;
+        }
+
+        .auth-form-modern {
+          display: flex;
+          flex-direction: column;
+          gap: 1.2rem;
+        }
+
+        .auth-input-modern {
+          width: 100%;
+          padding: 0.8rem 1rem;
+          background: rgba(15,23,42,0.6);
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 12px;
+          color: white;
+          font-size: 0.95rem;
+          outline: none;
+          transition: all 0.2s;
+          box-sizing: border-box;
+        }
+
+        .auth-input-modern:focus {
+          border-color: #10b981;
+          box-shadow: 0 0 0 2px rgba(16,185,129,0.2);
+          background: rgba(15,23,42,0.8);
+        }
+
+        .auth-submit-modern {
+          width: 100%;
+          padding: 1rem;
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          margin-top: 1rem;
+          box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .auth-submit-modern:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+        }
+
+        .auth-submit-modern:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        @media (min-width: 900px) {
+          .farmer-auth-hero {
+            display: flex;
+          }
+        }
+
+        @media (max-width: 899px) {
+          .farmer-auth-sidebar {
+            max-width: 100%;
+            background: #0f172a; /* Solid bg on mobile */
+          }
+          .auth-header-mobile {
+            display: flex !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
