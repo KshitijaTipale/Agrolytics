@@ -202,6 +202,25 @@ const FarmerDashboard = () => {
   const chartData = Object.keys(varietyMap).map(k => ({ name: k, value: varietyMap[k] }))
   const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899']
 
+  // Generate Smart Calendar Tasks based on actual crop growth
+  const upcomingTasks = []
+  if (totalFields > 0 && configuredFieldsCount > 0) {
+    fields.forEach(f => {
+      const prog = getProgress(f)
+      if (prog === 0) return;
+
+      // We categorize them vaguely to give the 'smart' illusion
+      if (prog < 5) upcomingTasks.push({ id: f.id, field: f.name, time: 'Next 3 Days', task: 'Initial germination spot check', priority: 'high' })
+      else if (prog >= 5 && prog < 15) upcomingTasks.push({ id: f.id, field: f.name, time: 'By Weekend', task: 'First weeding & light irrigation', priority: 'med' })
+      else if (prog >= 15 && prog < 30) upcomingTasks.push({ id: f.id, field: f.name, time: 'Next 7 Days', task: 'Nitrogen (N) Top Dressing (Early Tillering)', priority: 'high' })
+      else if (prog >= 30 && prog < 50) upcomingTasks.push({ id: f.id, field: f.name, time: 'This Month', task: 'Grand growth phase - maximize moisture tracking', priority: 'med' })
+      else if (prog >= 75 && prog < 90) upcomingTasks.push({ id: f.id, field: f.name, time: 'In 2 Weeks', task: 'Maturation scan - Stop excess Nitrogen', priority: 'high' })
+      else if (prog >= 90) upcomingTasks.push({ id: f.id, field: f.name, time: 'IMMEDIATE', task: 'Schedule sugar recovery testing / Harvest planning', priority: 'high' })
+    })
+  }
+  // Trim to 3 most relevant Tasks
+  const topTasks = upcomingTasks.slice(0, 3)
+
   return (
     <div className="dash-dark-container" onClick={handleOutsideClick}>
       {/* Dynamic Background */}
@@ -433,6 +452,36 @@ const FarmerDashboard = () => {
                   </div>
                 </div>
               </div>
+
+              {/* SMART CALENDAR / TO-DO WIDGET */}
+              {(topTasks.length > 0 || pendingFields.length > 0) && (
+                <div className="dash-widget todo-widget">
+                  <div className="widget-header">
+                    <h3 className="widget-title"><Clock size={16} color="#fbbf24" /> Upcoming Agronomic Tasks</h3>
+                  </div>
+                  <div className="task-list">
+                    {pendingFields.length > 0 && (
+                      <div className="task-item high-priority">
+                        <div className="task-check"><AlertCircle size={14} color="#fbbf24" /></div>
+                        <div className="task-content">
+                          <h4>Configure Pending Fields</h4>
+                          <span>Immediate • Setup Phase</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {topTasks.map((task, idx) => (
+                      <div key={`${task.id}-${idx}`} className={`task-item ${task.priority === 'high' ? 'high-priority' : 'med-priority'}`}>
+                        <div className="task-check"><CheckCircle2 size={14} color={task.priority === 'high' ? '#f87171' : '#10b981'} /></div>
+                        <div className="task-content">
+                          <h4>{task.task}</h4>
+                          <span>{task.time} • Field: {task.field}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* CHART WIDGET (Recharts) */}
               {chartData.length > 0 && (
@@ -1165,6 +1214,46 @@ const FarmerDashboard = () => {
         @keyframes fade-in {
            from { opacity: 0; transform: translateY(-5px); }
            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- SMART CALENDAR TODO MAPPING --- */
+        .task-list {
+           display: flex;
+           flex-direction: column;
+           gap: 0.8rem;
+        }
+
+        .task-item {
+           display: flex;
+           align-items: flex-start;
+           gap: 0.8rem;
+           background: rgba(255,255,255,0.03);
+           border: 1px solid rgba(255,255,255,0.05);
+           padding: 0.8rem;
+           border-radius: 10px;
+        }
+
+        .task-item.high-priority {
+           border-left: 3px solid #f87171;
+        }
+
+        .task-item.med-priority {
+           border-left: 3px solid #10b981;
+        }
+
+        .task-check {
+           margin-top: 2px;
+        }
+
+        .task-content h4 {
+           margin: 0 0 0.2rem 0;
+           font-size: 0.95rem;
+           font-weight: 500;
+        }
+
+        .task-content span {
+           font-size: 0.75rem;
+           color: #64748b;
         }
 
         /* --- MAP PLACEHOLDER --- */
