@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
-import { Users, Droplets, TrendingUp, TrendingDown, AlertTriangle, Factory, Calendar, Search, Map as MapIcon, Activity, Leaf, BarChart3, Thermometer, Brain, Zap, Loader2, Clock } from 'lucide-react'
+import { Users, Droplets, TrendingUp, TrendingDown, AlertTriangle, Factory, Calendar, Search, Map as MapIcon, Activity, Leaf, BarChart3, Thermometer, Brain, Zap, Loader2, Clock, MapPin, Ruler, Settings2, Trophy } from 'lucide-react'
 import talukaStats from '../data/taluka_stats.json'
 import { fetchBatchPredictions, fetchHarvestPredictions } from '../services/yieldPredictionService'
 import { generateRiskAlerts } from '../services/riskAnalysisService'
@@ -33,6 +33,12 @@ const getAggregatedData = () => {
   const yearlyTrend = {}
   Object.keys(yearTotals).sort().forEach(yr => { yearlyTrend[yr] = parseFloat((yearTotals[yr] / yearCounts[yr]).toFixed(2)) })
 
+  // Aggregate soil & irrigation distributions
+  const soilDistribution = {}
+  allTalukas.forEach(([, d]) => { Object.entries(d.soilDistribution || {}).forEach(([k, v]) => { soilDistribution[k] = (soilDistribution[k] || 0) + v }) })
+  const irrigationDistribution = {}
+  allTalukas.forEach(([, d]) => { Object.entries(d.irrigationDistribution || {}).forEach(([k, v]) => { irrigationDistribution[k] = (irrigationDistribution[k] || 0) + v }) })
+
   return {
     fieldCount: sum('fieldCount'), avgYield: avg('avgYield'), totalArea: parseFloat(sum('totalArea').toFixed(2)),
     totalEstYield: sum('totalEstYield'), avgNDVI: avg('avgNDVI'), avgRainfall: avg('avgRainfall'),
@@ -42,7 +48,7 @@ const getAggregatedData = () => {
     varietyPerformance, seasonPerformance,
     topVariety: Object.keys(varietyPerformance).reduce((a, b) => varietyPerformance[a] > varietyPerformance[b] ? a : b, ''),
     topSeason: Object.keys(seasonPerformance).reduce((a, b) => seasonPerformance[a] > seasonPerformance[b] ? a : b, ''),
-    yearlyTrend
+    yearlyTrend, soilDistribution, irrigationDistribution
   }
 }
 
@@ -50,6 +56,7 @@ const FactoryDashboard = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [factoryName, setFactoryName] = useState('Central Factory Command')
+  
   const [selectedTaluka, setSelectedTaluka] = useState('All Regions')
   const [searchTerm, setSearchTerm] = useState('')
   const [fields, setFields] = useState([])
@@ -168,6 +175,39 @@ const FactoryDashboard = () => {
     </div>
   )
 
+  const renderQuickStats = () => {
+    const totalArea = filteredFields.reduce((sum, f) => sum + parseFloat(f.area || 0), 0).toFixed(1)
+    const configuredCount = filteredFields.filter(f => {
+      const d = Array.isArray(f.field_details) ? f.field_details?.[0] : f.field_details
+      return d?.taluka && d?.season && d?.variety && d?.soil_type && d?.irrigation_method
+    }).length
+
+    const stats = [
+      { icon: MapPin, label: 'Fields', value: filteredFields.length, color: '#3b82f6' },
+      { icon: Ruler, label: 'Total Area', value: `${totalArea} Ha`, color: '#10b981' },
+      { icon: Leaf, label: 'Avg NDVI', value: currentData?.avgNDVI || '—', color: currentData?.avgNDVI >= 0.65 ? '#10b981' : currentData?.avgNDVI >= 0.55 ? '#f59e0b' : '#ef4444' },
+      { icon: Settings2, label: 'Configured', value: configuredCount, color: '#8b5cf6' },
+      { icon: AlertTriangle, label: 'Alerts', value: activeAlerts.length, color: activeAlerts.length > 0 ? '#ef4444' : '#10b981' },
+    ]
+
+    return (
+      <div style={{
+        display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem',
+        padding: '0.7rem 1rem', borderRadius: '10px',
+        background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(255,255,255,0.06)',
+        backdropFilter: 'blur(8px)'
+      }}>
+        {stats.map((s, i) => (
+          <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.3rem 0.7rem', borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none', paddingRight: i < stats.length - 1 ? '1rem' : '0.7rem' }}>
+            <s.icon size={14} color={s.color} />
+            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{s.label}</span>
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: s.color }}>{s.value}</span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   const renderMetrics = () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
       {/* Avg Yield */}
@@ -202,6 +242,18 @@ const FactoryDashboard = () => {
               {currentAI.avgPredicted || '—'} <span style={{ fontSize: '1rem', color: '#94a3b8' }}>T/Ha</span>
             </h2>
             <p style={{ margin: 0, fontSize: '0.8rem', color: '#94a3b8' }}>{currentAI.fieldCount || 0} fields predicted • {currentAI.totalPredicted?.toLocaleString() || 0} T total</p>
+            {(() => {
+              const hist = currentData?.avgYield || 0
+              const ai = currentAI.avgPredicted || 0
+              const diff = ai - hist
+              const pct = hist ? ((diff / hist) * 100).toFixed(1) : 0
+              const up = diff >= 0
+              return (
+                <p style={{ margin: '0.4rem 0 0', fontSize: '0.75rem', fontWeight: 600, color: up ? '#10b981' : '#ef4444' }}>
+                  {up ? '▲' : '▼'} {up ? '+' : ''}{diff.toFixed(1)} T/Ha ({up ? '+' : ''}{pct}%) vs Historical
+                </p>
+              )
+            })()}
           </>
         ) : (
           <div style={{ padding: '0.5rem 0' }}>
@@ -232,63 +284,74 @@ const FactoryDashboard = () => {
         </div>
       </div>
 
-      {/* Climate Summary */}
-      <div className="glass-card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-          <span className="card-label">Climate Profile</span>
-          <div style={{ background: 'rgba(244,63,94,0.1)', padding: '0.5rem', borderRadius: '8px' }}><Thermometer size={20} color="#f43f5e" /></div>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', fontSize: '0.9rem' }}>
-          <div><span style={{ color: '#94a3b8', fontSize: '0.75rem', display: 'block' }}>Avg Rainfall</span><strong>{currentData?.avgRainfall || 0} mm</strong></div>
-          <div><span style={{ color: '#94a3b8', fontSize: '0.75rem', display: 'block' }}>Avg Humidity</span><strong>{currentData?.avgHumidity || 0}%</strong></div>
-          <div><span style={{ color: '#94a3b8', fontSize: '0.75rem', display: 'block' }}>Max Temp</span><strong>{currentData?.avgMaxTemp || 0}°C</strong></div>
-          <div><span style={{ color: '#94a3b8', fontSize: '0.75rem', display: 'block' }}>Min Temp</span><strong>{currentData?.avgMinTemp || 0}°C</strong></div>
-        </div>
-      </div>
+      {/* Crushing Season Countdown — feat_7 */}
+      {(() => {
+        const now = new Date()
+        const year = now.getFullYear()
+        const month = now.getMonth() // 0-indexed
+
+        // Season: Oct 15 → Apr 15
+        let seasonStart, seasonEnd, seasonLabel
+        if (month >= 9) {
+          // Oct–Dec: current year season
+          seasonStart = new Date(year, 9, 15)
+          seasonEnd = new Date(year + 1, 3, 15)
+          seasonLabel = `${year}–${year + 1}`
+        } else if (month <= 3) {
+          // Jan–Apr: previous year's season still running
+          seasonStart = new Date(year - 1, 9, 15)
+          seasonEnd = new Date(year, 3, 15)
+          seasonLabel = `${year - 1}–${year}`
+        } else {
+          // May–Sep: off-season
+          seasonStart = new Date(year, 9, 15)
+          seasonEnd = new Date(year + 1, 3, 15)
+          seasonLabel = `${year}–${year + 1}`
+        }
+
+        const inSeason = now >= seasonStart && now <= seasonEnd
+        const totalDays = Math.ceil((seasonEnd - seasonStart) / (1000 * 60 * 60 * 24))
+        const elapsed = inSeason ? Math.ceil((now - seasonStart) / (1000 * 60 * 60 * 24)) : 0
+        const remaining = inSeason ? totalDays - elapsed : Math.ceil((seasonStart - now) / (1000 * 60 * 60 * 24))
+        const progressPct = inSeason ? Math.min(100, ((elapsed / totalDays) * 100).toFixed(0)) : 0
+        const tonnage = currentAI?.totalPredicted || currentData?.totalEstYield || 0
+
+        return (
+          <div className="glass-card" style={{ border: inSeason ? '1px solid rgba(59,130,246,0.3)' : '1px solid rgba(100,116,139,0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+              <span className="card-label">Crushing Season</span>
+              <div style={{ background: inSeason ? 'rgba(59,130,246,0.1)' : 'rgba(100,116,139,0.1)', padding: '0.5rem', borderRadius: '8px' }}><Calendar size={20} color={inSeason ? '#3b82f6' : '#64748b'} /></div>
+            </div>
+            {inSeason ? (
+              <>
+                <h2 style={{ fontSize: '2.2rem', margin: '0 0 0.3rem 0', color: '#3b82f6' }}>
+                  {remaining} <span style={{ fontSize: '1rem', color: '#94a3b8' }}>Days Left</span>
+                </h2>
+                <div className="progress-bar-container" style={{ height: '8px', marginBottom: '0.5rem' }}>
+                  <div style={{ width: `${progressPct}%`, height: '100%', borderRadius: '4px', background: 'linear-gradient(90deg, #3b82f6, #60a5fa)', transition: 'width 0.5s ease' }}></div>
+                </div>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8' }}>
+                  {progressPct}% complete • Est: {tonnage.toLocaleString()} T • {seasonLabel}
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 style={{ fontSize: '2.2rem', margin: '0 0 0.3rem 0', color: '#64748b' }}>
+                  Off-Season
+                </h2>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: '#94a3b8' }}>
+                  Next season starts in <strong style={{ color: '#f59e0b' }}>{remaining} days</strong>
+                </p>
+                <p style={{ margin: '0.3rem 0 0', fontSize: '0.75rem', color: '#64748b' }}>
+                  {seasonLabel} • Oct 15 → Apr 15
+                </p>
+              </>
+            )}
+          </div>
+        )
+      })()}
     </div>
   )
-
-  // AI vs Historical Comparison — Phase 2 NEW
-  const renderAIComparison = () => {
-    if (!currentAI || !currentAI.fieldCount) return null
-    const historical = currentData?.avgYield || 0
-    const aiAvg = currentAI.avgPredicted || 0
-    const diff = aiAvg - historical
-    const diffPct = historical ? ((diff / historical) * 100).toFixed(1) : 0
-    const isPositive = diff >= 0
-
-    return (
-      <div className="glass-card" style={{ marginBottom: '2rem', border: '1px solid rgba(139,92,246,0.2)', background: 'linear-gradient(135deg, rgba(139,92,246,0.05), rgba(59,130,246,0.05))' }}>
-        <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.2rem', fontSize: '1.1rem' }}>
-          <Zap size={20} color="#f59e0b" /> AI vs Historical Yield Comparison
-        </h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', alignItems: 'center' }}>
-          {/* Historical */}
-          <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(16,185,129,0.08)', borderRadius: '12px', border: '1px solid rgba(16,185,129,0.15)' }}>
-            <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.5rem' }}>📊 Historical Avg</div>
-            <div style={{ fontSize: '2rem', fontWeight: 700, color: '#10b981' }}>{historical} <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>T/Ha</span></div>
-            <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.3rem' }}>{currentData?.fieldCount?.toLocaleString()} dataset records</div>
-          </div>
-          {/* AI */}
-          <div style={{ textAlign: 'center', padding: '1rem', background: 'rgba(139,92,246,0.08)', borderRadius: '12px', border: '1px solid rgba(139,92,246,0.15)' }}>
-            <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.5rem' }}>🤖 AI Predicted Avg</div>
-            <div style={{ fontSize: '2rem', fontWeight: 700, color: '#a78bfa' }}>{aiAvg} <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>T/Ha</span></div>
-            <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.3rem' }}>{currentAI.fieldCount} registered fields</div>
-          </div>
-          {/* Difference */}
-          <div style={{ textAlign: 'center', padding: '1rem', background: isPositive ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)', borderRadius: '12px', border: `1px solid ${isPositive ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'}` }}>
-            <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.5rem' }}>{isPositive ? '📈' : '📉'} Deviation</div>
-            <div style={{ fontSize: '2rem', fontWeight: 700, color: isPositive ? '#10b981' : '#ef4444' }}>
-              {isPositive ? '+' : ''}{diff.toFixed(1)} <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>T/Ha</span>
-            </div>
-            <div style={{ fontSize: '0.75rem', color: isPositive ? '#10b981' : '#ef4444', marginTop: '0.3rem', fontWeight: 600 }}>
-              {isPositive ? '+' : ''}{diffPct}% vs historical
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   const renderInsights = () => {
     const varieties = currentData?.varietyPerformance || {}
@@ -300,71 +363,73 @@ const FactoryDashboard = () => {
     const maxYearYield = Math.max(...yearEntries.map(([, v]) => v), 1)
 
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
         {/* Variety Performance */}
-        <div className="glass-card">
-          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
-            <Leaf size={20} color="#10b981" /> Variety Performance
+        <div className="glass-card" style={{ padding: '1rem 1.2rem' }}>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 0.8rem 0', fontSize: '1rem' }}>
+            <Leaf size={18} color="#10b981" /> Variety Performance
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {Object.entries(varieties).sort(([, a], [, b]) => b - a).map(([variety, avgYield]) => (
               <div key={variety}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', fontSize: '0.85rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem', fontSize: '0.8rem' }}>
                   <span style={{ color: variety === currentData?.topVariety ? '#10b981' : '#cbd5e1', fontWeight: variety === currentData?.topVariety ? 700 : 400 }}>
                     {variety === currentData?.topVariety ? '⭐ ' : ''}{variety}
                   </span>
-                  <span style={{ fontWeight: 600 }}>{avgYield} T/Ha</span>
+                  <span style={{ fontWeight: 600, fontSize: '0.8rem' }}>{avgYield} T/Ha</span>
                 </div>
-                <div className="progress-bar-container" style={{ height: '6px' }}><div className="progress-bar-fill" style={{ width: `${(avgYield / maxVarietyYield) * 100}%` }}></div></div>
+                <div className="progress-bar-container" style={{ height: '5px' }}><div className="progress-bar-fill" style={{ width: `${(avgYield / maxVarietyYield) * 100}%` }}></div></div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Season Performance */}
-        <div className="glass-card">
-          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
-            <Calendar size={20} color="#f59e0b" /> Season Performance
+        <div className="glass-card" style={{ padding: '1rem 1.2rem' }}>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 0.8rem 0', fontSize: '1rem' }}>
+            <Calendar size={18} color="#f59e0b" /> Season Performance
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {Object.entries(seasons).sort(([, a], [, b]) => b - a).map(([season, avgYield]) => (
-              <div key={season} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ width: '100px', fontSize: '0.85rem', color: season === currentData?.topSeason ? '#f59e0b' : '#cbd5e1', fontWeight: season === currentData?.topSeason ? 700 : 400 }}>
+              <div key={season} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <div style={{ width: '85px', fontSize: '0.8rem', color: season === currentData?.topSeason ? '#f59e0b' : '#cbd5e1', fontWeight: season === currentData?.topSeason ? 700 : 400 }}>
                   {season === currentData?.topSeason ? '🏆 ' : ''}{season}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div className="progress-bar-container" style={{ height: '8px' }}>
+                  <div className="progress-bar-container" style={{ height: '6px' }}>
                     <div className="progress-bar-fill" style={{ width: `${(avgYield / maxSeasonYield) * 100}%`, background: season === 'Adsali' ? 'linear-gradient(90deg, #10b981, #34d399)' : season === 'Pre-seasonal' ? 'linear-gradient(90deg, #f59e0b, #fbbf24)' : 'linear-gradient(90deg, #3b82f6, #60a5fa)' }}></div>
                   </div>
                 </div>
-                <span style={{ fontWeight: 600, minWidth: '70px', textAlign: 'right', fontSize: '0.9rem' }}>{avgYield} T/Ha</span>
+                <span style={{ fontWeight: 600, minWidth: '60px', textAlign: 'right', fontSize: '0.8rem' }}>{avgYield} T/Ha</span>
               </div>
             ))}
-          </div>
-          <div style={{ marginTop: '1.2rem', padding: '0.8rem', background: 'rgba(245,158,11,0.1)', borderRadius: '8px', border: '1px solid rgba(245,158,11,0.2)', fontSize: '0.8rem', color: '#fbbf24' }}>
-            💡 <strong>Adsali</strong> consistently outperforms by ~40 T/Ha due to longer growth (~{currentData?.avgHarvestDuration || 430} days avg).
           </div>
         </div>
 
         {/* Yearly Trend */}
-        <div className="glass-card" style={{ gridColumn: '1 / -1' }}>
-          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
-            <BarChart3 size={20} color="#8b5cf6" /> Yield Trend (2019–2024)
+        <div className="glass-card" style={{ padding: '1rem 1.2rem' }}>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 0.8rem 0', fontSize: '1rem' }}>
+            <BarChart3 size={18} color="#8b5cf6" /> Yield Trend (2019–2024)
           </h3>
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: '12px', height: '140px', paddingBottom: '30px', position: 'relative' }}>
-            {yearEntries.map(([year, avgYield], i) => {
-              const heightPct = Math.max(10, (avgYield / maxYearYield) * 100)
-              const prevYield = i > 0 ? yearEntries[i - 1][1] : avgYield
-              const isUp = avgYield >= prevYield
-              return (
-                <div key={year} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: isUp ? '#10b981' : '#ef4444' }}>{avgYield}</span>
-                  <div style={{ width: '100%', maxWidth: '60px', height: `${heightPct}%`, background: isUp ? 'linear-gradient(0deg, #10b981, #34d399)' : 'linear-gradient(0deg, #ef4444, #f87171)', borderRadius: '6px 6px 0 0', transition: 'height 0.5s ease' }}></div>
-                  <span style={{ position: 'absolute', bottom: '0', fontSize: '0.75rem', color: '#94a3b8' }}>{year}</span>
-                </div>
-              )
-            })}
-          </div>
+          {(() => {
+            const barAreaHeight = 80 // px available for bars
+            return (
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '120px', paddingBottom: '24px', position: 'relative' }}>
+                {yearEntries.map(([year, avgYield], i) => {
+                  const barH = Math.max(8, Math.round((avgYield / maxYearYield) * barAreaHeight))
+                  const prevYield = i > 0 ? yearEntries[i - 1][1] : avgYield
+                  const isUp = avgYield >= prevYield
+                  return (
+                    <div key={year} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', gap: '0.2rem' }}>
+                      <span style={{ fontSize: '0.65rem', fontWeight: 600, color: isUp ? '#10b981' : '#ef4444' }}>{avgYield}</span>
+                      <div style={{ width: '70%', maxWidth: '42px', height: `${barH}px`, background: isUp ? 'linear-gradient(0deg, #10b981, #34d399)' : 'linear-gradient(0deg, #ef4444, #f87171)', borderRadius: '4px 4px 0 0', transition: 'height 0.5s ease' }}></div>
+                      <span style={{ fontSize: '0.65rem', color: '#94a3b8', marginTop: '2px' }}>{year}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })()}
         </div>
       </div>
     )
@@ -478,6 +543,109 @@ const FactoryDashboard = () => {
     )
   }
 
+  // Taluka Leaderboard — feat_5
+  const renderTalukaLeaderboard = () => {
+    if (selectedTaluka !== 'All Regions') return null
+
+    const ranked = Object.entries(talukaStats)
+      .map(([name, d]) => ({ name, yield: d.avgYield, fields: d.fieldCount }))
+      .sort((a, b) => b.yield - a.yield)
+    const maxYield = ranked[0]?.yield || 1
+    const medals = ['🥇', '🥈', '🥉']
+
+    return (
+      <div className="glass-card" style={{ marginBottom: '2rem' }}>
+        <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>
+          <Trophy size={20} color="#f59e0b" /> Taluka Leaderboard
+        </h3>
+        <div style={{ display: 'flex', gap: '0.6rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+          {ranked.map((t, i) => {
+            const isTop3 = i < 3
+            const isBottom3 = i >= ranked.length - 3
+            const barColor = isTop3 ? '#f59e0b' : isBottom3 ? '#ef4444' : '#3b82f6'
+            const bg = isTop3 ? 'rgba(245,158,11,0.08)' : isBottom3 ? 'rgba(239,68,68,0.06)' : 'rgba(15,23,42,0.4)'
+            const border = isTop3 ? '1px solid rgba(245,158,11,0.2)' : isBottom3 ? '1px solid rgba(239,68,68,0.15)' : '1px solid rgba(255,255,255,0.05)'
+
+            return (
+              <div key={t.name} style={{ minWidth: '120px', flex: '0 0 auto', padding: '0.7rem', borderRadius: '8px', background: bg, border, textAlign: 'center' }}>
+                <div style={{ fontSize: '0.7rem', color: '#64748b', marginBottom: '0.3rem' }}>
+                  {isTop3 ? medals[i] : `#${i + 1}`}
+                </div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#f8fafc', marginBottom: '0.2rem', whiteSpace: 'nowrap' }}>{t.name}</div>
+                <div style={{ fontSize: '1rem', fontWeight: 700, color: barColor }}>{t.yield} <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>T/Ha</span></div>
+                <div className="progress-bar-container" style={{ height: '4px', marginTop: '0.4rem' }}>
+                  <div style={{ width: `${(t.yield / maxYield * 100).toFixed(0)}%`, height: '100%', borderRadius: '2px', background: barColor }}></div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  // Soil & Irrigation Profile — feat_6
+  const renderSoilIrrigation = () => {
+    const soils = currentData?.soilDistribution || {}
+    const irrig = currentData?.irrigationDistribution || {}
+    const soilTotal = Object.values(soils).reduce((s, v) => s + v, 0) || 1
+    const irrigTotal = Object.values(irrig).reduce((s, v) => s + v, 0) || 1
+    const soilColors = { 'Sandy Loam': '#f59e0b', 'Black Cotton': '#6366f1', 'Medium Black': '#8b5cf6', 'Clay Loam': '#ec4899', 'Deep Black': '#a855f7' }
+    const irrigColors = { 'Drip': '#10b981', 'Rainfed': '#3b82f6', 'Flood': '#f59e0b', 'Sprinkler': '#06b6d4' }
+
+    if (Object.keys(soils).length === 0 && Object.keys(irrig).length === 0) return null
+
+    return (
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+        {/* Soil Distribution */}
+        <div className="glass-card">
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 1rem 0', fontSize: '1.05rem' }}>
+            <Leaf size={18} color="#f59e0b" /> Soil Distribution
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+            {Object.entries(soils).sort(([,a],[,b]) => b - a).map(([type, count]) => {
+              const pct = ((count / soilTotal) * 100).toFixed(1)
+              return (
+                <div key={type}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem', fontSize: '0.8rem' }}>
+                    <span style={{ color: '#cbd5e1' }}>{type}</span>
+                    <span style={{ color: '#94a3b8', fontWeight: 600 }}>{pct}%</span>
+                  </div>
+                  <div className="progress-bar-container" style={{ height: '6px' }}>
+                    <div style={{ width: `${pct}%`, height: '100%', borderRadius: '3px', background: soilColors[type] || '#64748b' }}></div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Irrigation Distribution */}
+        <div className="glass-card">
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 1rem 0', fontSize: '1.05rem' }}>
+            <Droplets size={18} color="#3b82f6" /> Irrigation Methods
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+            {Object.entries(irrig).sort(([,a],[,b]) => b - a).map(([method, count]) => {
+              const pct = ((count / irrigTotal) * 100).toFixed(1)
+              return (
+                <div key={method}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem', fontSize: '0.8rem' }}>
+                    <span style={{ color: '#cbd5e1' }}>{method}</span>
+                    <span style={{ color: '#94a3b8', fontWeight: 600 }}>{pct}%</span>
+                  </div>
+                  <div className="progress-bar-container" style={{ height: '6px' }}>
+                    <div style={{ width: `${pct}%`, height: '100%', borderRadius: '3px', background: irrigColors[method] || '#64748b' }}></div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const renderFieldsTable = () => (
     <div className="glass-card" style={{ overflow: 'hidden' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
@@ -494,7 +662,7 @@ const FactoryDashboard = () => {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '500px' }}>
           <thead style={{ position: 'sticky', top: 0, background: '#1e293b' }}>
             <tr>
-              {['Field', 'Farmer', 'Taluka', 'Variety', 'Area', 'AI Yield'].map(h => (
+              {['Field', 'Farmer', 'Taluka', 'Variety', 'Area', 'AI Yield', 'Harvest ETA'].map(h => (
                 <th key={h} style={{ padding: '0.8rem 0.5rem', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: '0.8rem', color: '#cbd5e1' }}>{h}</th>
               ))}
             </tr>
@@ -520,11 +688,26 @@ const FactoryDashboard = () => {
                       <span style={{ color: '#475569', fontSize: '0.75rem' }}>—</span>
                     )}
                   </td>
+                  <td style={{ padding: '0.7rem 0.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    {harvestLoading ? (
+                      <span style={{ color: '#64748b', fontSize: '0.8rem' }}>...</span>
+                    ) : (() => {
+                      const hq = harvestQueue.find(h => h.fieldId === field.id)
+                      if (!hq) return <span style={{ color: '#475569', fontSize: '0.75rem' }}>—</span>
+                      const color = hq.daysRemaining <= 0 ? '#ef4444' : hq.daysRemaining <= 15 ? '#f59e0b' : '#10b981'
+                      return (
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color }}>
+                          {hq.daysRemaining <= 0 ? 'Ready Now' : `${hq.daysRemaining}d`}
+                          <span style={{ color: '#64748b', fontWeight: 400, marginLeft: '0.3rem', fontSize: '0.7rem' }}>{hq.expectedDate}</span>
+                        </span>
+                      )
+                    })()}
+                  </td>
                 </tr>
               )
             })}
             {filteredFields.length === 0 && !loading && (
-              <tr><td colSpan="6" style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>No fields found.</td></tr>
+              <tr><td colSpan="7" style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>No fields found.</td></tr>
             )}
           </tbody>
         </table>
@@ -536,6 +719,7 @@ const FactoryDashboard = () => {
     <div className="command-center-bg">
       <div className="dashboard-container" style={{ maxWidth: '1400px', margin: '0 auto', paddingTop: '2rem' }}>
         {renderTopBar()}
+        {renderQuickStats()}
         {loading ? (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
             <Droplets className="spin-slow" size={48} color="#3b82f6" style={{ marginBottom: '1rem' }} />
@@ -544,9 +728,10 @@ const FactoryDashboard = () => {
         ) : (
           <>
             {renderMetrics()}
-            {renderAIComparison()}
             {renderRiskAlerts()}
+            {renderTalukaLeaderboard()}
             {renderHarvestQueue()}
+            {renderSoilIrrigation()}
             {renderInsights()}
             {renderFieldsTable()}
           </>
