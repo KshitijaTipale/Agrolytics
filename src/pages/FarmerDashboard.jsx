@@ -8,7 +8,7 @@ import talukaStats from '../data/taluka_stats.json'
 import {
   Sprout, Plus, Trash2, MoreVertical, LayoutGrid, Leaf,
   Thermometer, Droplets, Wind, AlertCircle, CheckCircle2,
-  CloudRain, Sun, Calendar, Clock, ArrowRight, BrainCircuit, ShieldCheck, Activity, BarChart2, MapPin, Terminal, Layers
+  CloudRain, Sun, Calendar, Clock, ArrowRight, BrainCircuit, ShieldCheck, Activity, BarChart2, MapPin, Terminal, Layers, TrendingUp, Smartphone, BellRing
 } from 'lucide-react'
 
 // Mock Telemetry Data 
@@ -26,9 +26,24 @@ const FarmerDashboard = () => {
   const [farmerName, setFarmerName] = useState('Farmer')
   const [activeTab, setActiveTab] = useState('dashboard') // dashboard | map
   const [telemetryLogs, setTelemetryLogs] = useState(initialTelemetry)
+  const [liveWeather, setLiveWeather] = useState(null)
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true)
 
   // Real-time telemetry simulation
   useEffect(() => {
+    // 1. Fetch Real Live Weather (Open-Meteo API for approx Maharashtra coordinates + no key required)
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.09&longitude=74.74&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation&timezone=auto');
+        const data = await res.json();
+        setLiveWeather(data.current);
+      } catch (err) {
+        console.error('Failed to fetch live weather, falling back to taluka avg:', err);
+      }
+    };
+    fetchWeather();
+
+    // 2. Telemetry logs loop
     const interval = setInterval(() => {
       setTelemetryLogs(prev => {
         const r = Math.random();
@@ -206,16 +221,23 @@ const FarmerDashboard = () => {
   const upcomingTasks = []
   if (totalFields > 0 && configuredFieldsCount > 0) {
     fields.forEach(f => {
-      const prog = getProgress(f)
-      if (prog === 0) return;
+      const details = Array.isArray(f.field_details) ? f.field_details[0] : f.field_details
+      if (!details || !details.planting_date) return;
 
-      // We categorize them vaguely to give the 'smart' illusion
-      if (prog < 5) upcomingTasks.push({ id: f.id, field: f.name, time: 'Next 3 Days', task: 'Initial germination spot check', priority: 'high' })
-      else if (prog >= 5 && prog < 15) upcomingTasks.push({ id: f.id, field: f.name, time: 'By Weekend', task: 'First weeding & light irrigation', priority: 'med' })
-      else if (prog >= 15 && prog < 30) upcomingTasks.push({ id: f.id, field: f.name, time: 'Next 7 Days', task: 'Nitrogen (N) Top Dressing (Early Tillering)', priority: 'high' })
-      else if (prog >= 30 && prog < 50) upcomingTasks.push({ id: f.id, field: f.name, time: 'This Month', task: 'Grand growth phase - maximize moisture tracking', priority: 'med' })
-      else if (prog >= 75 && prog < 90) upcomingTasks.push({ id: f.id, field: f.name, time: 'In 2 Weeks', task: 'Maturation scan - Stop excess Nitrogen', priority: 'high' })
-      else if (prog >= 90) upcomingTasks.push({ id: f.id, field: f.name, time: 'IMMEDIATE', task: 'Schedule sugar recovery testing / Harvest planning', priority: 'high' })
+      const plantDate = new Date(details.planting_date)
+      const diffDays = Math.ceil(Math.abs(new Date() - plantDate) / (1000 * 60 * 60 * 24))
+
+      if (diffDays >= 30 && diffDays <= 45) {
+        upcomingTasks.push({ id: f.id, field: f.name, time: 'Day 30-45 Window', task: 'Fertilizer Application Window (N-P-K)', priority: 'high' })
+      } else if (diffDays >= 115 && diffDays <= 125) {
+        upcomingTasks.push({ id: f.id, field: f.name, time: 'Day 120 Window', task: 'Earthing up recommended to prevent lodging', priority: 'high' })
+      } else if (diffDays >= 300) {
+        upcomingTasks.push({ id: f.id, field: f.name, time: 'Day 300+ Window', task: 'Pre-harvest assessment (Sugar sampling)', priority: 'high' })
+      } else if (diffDays < 30) {
+        upcomingTasks.push({ id: f.id, field: f.name, time: 'Early Phase', task: 'Monitor soil moisture and weed emergence', priority: 'med' })
+      } else if (diffDays > 45 && diffDays < 115) {
+        upcomingTasks.push({ id: f.id, field: f.name, time: 'Grand Growth', task: 'Monitor leaf health and canopy coverage', priority: 'med' })
+      }
     })
   }
   // Trim to 3 most relevant Tasks
@@ -241,6 +263,14 @@ const FarmerDashboard = () => {
           </div>
 
           <div className="dash-header-actions">
+
+            {/* WhatsApp Alert Mock Toggle */}
+            <div className={`dash-notify-toggle ${notificationsEnabled ? 'on' : 'off'}`} onClick={() => setNotificationsEnabled(!notificationsEnabled)}>
+              <Smartphone size={16} />
+              <span>{notificationsEnabled ? 'SMS Alerts On' : 'SMS Alerts Off'}</span>
+              {notificationsEnabled && <BellRing size={14} className="ring-anim" />}
+            </div>
+
             <div className="dash-system-status">
               <ShieldCheck size={18} color="#10b981" />
               <span>System Secure & Active</span>
@@ -429,14 +459,14 @@ const FarmerDashboard = () => {
                 <div className="weather-main-row">
                   <Sun size={48} color="#fbbf24" strokeWidth={1.5} className="weather-icon-anim" />
                   <div>
-                    <h2 className="weather-temp">{weatherStats.avgMaxTemp}°C</h2>
-                    <p className="weather-desc">Clear & Sunny</p>
+                    <h2 className="weather-temp">{liveWeather ? Math.round(liveWeather.temperature_2m) : weatherStats.avgMaxTemp}°C</h2>
+                    <p className="weather-desc">{liveWeather?.precipitation > 0 ? "Rain Possible" : "Clear & Sunny"}</p>
                   </div>
                 </div>
                 <div className="weather-details-grid">
                   <div className="weather-detail-item">
                     <Droplets size={16} color="#60a5fa" />
-                    <span>{weatherStats.avgHumidity}% Hum</span>
+                    <span>{liveWeather ? liveWeather.relative_humidity_2m : weatherStats.avgHumidity}% Hum</span>
                   </div>
                   <div className="weather-detail-item">
                     <Thermometer size={16} color="#f87171" />
@@ -444,11 +474,11 @@ const FarmerDashboard = () => {
                   </div>
                   <div className="weather-detail-item">
                     <Wind size={16} color="#94a3b8" />
-                    <span>LST {weatherStats.avgLST}°C</span>
+                    <span>{liveWeather ? liveWeather.wind_speed_10m : '10'} km/h</span>
                   </div>
                   <div className="weather-detail-item">
                     <CloudRain size={16} color="#60a5fa" />
-                    <span>{weatherStats.avgRainfall}mm Rain</span>
+                    <span>{liveWeather ? liveWeather.precipitation : weatherStats.avgRainfall}mm Rain</span>
                   </div>
                 </div>
               </div>
@@ -552,7 +582,7 @@ const FarmerDashboard = () => {
                           <p><b>{field.name}</b>: Germination phase detected. Maintain optimal soil moisture for next 15 days.</p>
                         </div>
                       );
-                    } else if (prog >= 20 && prog < 80) {
+                    } else if (prog >= 20 && prog < 90) {
                       return (
                         <div key={idx} className="insight-item info-insight">
                           <div className="insight-icon"><Activity size={16} color="#10b981" /></div>
@@ -563,7 +593,7 @@ const FarmerDashboard = () => {
                       return (
                         <div key={idx} className="insight-item info-insight" style={{ background: 'rgba(245, 158, 11, 0.1)', borderLeft: '3px solid #f59e0b' }}>
                           <div className="insight-icon"><Calendar size={16} color="#f59e0b" /></div>
-                          <p><b>{field.name}</b>: Entering maturity phase. Prepare for pre-harvest machinery assessment soon.</p>
+                          <p><b>{field.name}</b>: <b>Harvest Ready!</b> Crop maturity over 90%. Schedule machinery and check mill capacity.</p>
                         </div>
                       );
                     }
@@ -583,6 +613,25 @@ const FarmerDashboard = () => {
                       <span className="telemetry-msg">{log.msg}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* MARKET TRENDS WIDGET */}
+              <div className="dash-widget market-widget">
+                <div className="widget-header">
+                  <h3 className="widget-title"><TrendingUp size={16} color="#3b82f6" /> Market Intelligence</h3>
+                </div>
+                <div className="market-row">
+                  <span className="market-label">FRP (Gov. Minimum)</span>
+                  <span className="market-price">₹ 3,400 <small>/ tn</small></span>
+                </div>
+                <div className="market-row">
+                  <span className="market-label">Local Sugar Mill Avg</span>
+                  <span className="market-price up">₹ 3,550 <small>▲ +2%</small></span>
+                </div>
+                <div className="market-row">
+                  <span className="market-label">Jaggery Rate (Est)</span>
+                  <span className="market-price">₹ 4,100 <small>--</small></span>
                 </div>
               </div>
 
@@ -1177,6 +1226,77 @@ const FarmerDashboard = () => {
            background: rgba(255,255,255,0.02);
            border: 1px solid rgba(255,255,255,0.05);
         }
+
+        /* --- NOTIFICATIONS TOGGLE --- */
+        .dash-notify-toggle {
+           display: flex;
+           align-items: center;
+           gap: 0.5rem;
+           padding: 0.5rem 1rem;
+           border-radius: 20px;
+           font-size: 0.85rem;
+           font-weight: 600;
+           cursor: pointer;
+           transition: all 0.2s;
+           border: 1px solid transparent;
+        }
+
+        .dash-notify-toggle.on {
+           background: rgba(59,130,246,0.1);
+           color: #60a5fa;
+           border-color: rgba(59,130,246,0.2);
+        }
+
+        .dash-notify-toggle.off {
+           background: rgba(255,255,255,0.05);
+           color: #64748b;
+        }
+
+        .ring-anim {
+           animation: ring 2s infinite;
+        }
+        @keyframes ring {
+           0%, 100% { transform: rotate(0deg); }
+           20% { transform: rotate(15deg); }
+           40% { transform: rotate(-10deg); }
+           60% { transform: rotate(5deg); }
+           80% { transform: rotate(-5deg); }
+        }
+
+        /* --- MARKET TRENDS WIDGET --- */
+        .market-widget {
+           padding: 1.5rem;
+        }
+
+        .market-row {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           padding: 0.8rem 0;
+           border-bottom: 1px dashed rgba(255,255,255,0.05);
+        }
+        .market-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .market-label {
+           color: #cbd5e1;
+           font-size: 0.9rem;
+        }
+
+        .market-price {
+           font-weight: 600;
+           font-size: 1.05rem;
+           display: flex;
+           align-items: baseline;
+           gap: 0.3rem;
+        }
+
+        .market-price small {
+           font-size: 0.75rem;
+           color: #64748b;
+        }
+
+        .market-price.up small { color: #10b981; }
+        .market-price.down small { color: #f87171; }
 
         /* --- TELEMETRY --- */
         .telemetry-widget {
