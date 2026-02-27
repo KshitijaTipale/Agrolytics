@@ -427,7 +427,7 @@ const FarmerDashboard = () => {
                           </div>
                         )
                       }) /* Close map */
-                    )} /* Close fields.length === 0 */
+                    )}
                   </div>
                 </>
               )}
@@ -537,8 +537,8 @@ const FarmerDashboard = () => {
                           ))}
                         </Pie>
                         <Tooltip
-                          contentStyle={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
-                          itemStyle={{ color: '#fff' }}
+                          contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', color: '#0f172a', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' }}
+                          itemStyle={{ color: '#0f172a', fontWeight: 500 }}
                         />
                       </PieChart>
                     </ResponsiveContainer>
@@ -664,12 +664,12 @@ const FarmerDashboard = () => {
       />
 
       <style>{`
-        /* --- DASHBOARD DARK THEME ROOT --- */
+        /* --- DASHBOARD LIGHT THEME ROOT --- */
         .dash-dark-container {
           min-height: 100vh;
-          background: #0f172a; /* Deep space background */
+          background: #f8fafc; /* Soft off-white background */
           font-family: 'Outfit', sans-serif;
-          color: white;
+          color: #0f172a; /* Slate 900 for high contrast text */
           position: relative;
           overflow-x: hidden;
         }
@@ -685,7 +685,7 @@ const FarmerDashboard = () => {
           position: absolute;
           border-radius: 50%;
           filter: blur(100px);
-          opacity: 0.15;
+          opacity: 0.05; /* Much more subtle for light theme */
         }
 
         .glow-orb.top-right {
@@ -715,7 +715,7 @@ const FarmerDashboard = () => {
            align-items: center;
            margin-bottom: 2.5rem;
            padding-bottom: 1.5rem;
-           border-bottom: 1px solid rgba(255,255,255,0.05);
+           border-bottom: 1px solid #e2e8f0;
         }
 
         .dash-brand-area {
@@ -732,16 +732,18 @@ const FarmerDashboard = () => {
         .dash-date {
            display: block;
            font-size: 0.85rem;
-           color: #94a3b8;
+           color: #64748b;
            margin-bottom: 0.2rem;
            text-transform: uppercase;
            letter-spacing: 1px;
+           font-weight: 600;
         }
 
         .dash-welcome {
            font-size: 2rem;
            font-weight: 700;
            margin: 0;
+           color: #0f172a;
            letter-spacing: -0.5px;
         }
 
@@ -777,26 +779,26 @@ const FarmerDashboard = () => {
            padding: 0.5rem 1rem;
            border-radius: 20px;
            font-size: 0.85rem;
-           color: #34d399;
+           color: #059669;
            font-weight: 600;
         }
 
         .dash-logout-btn {
-           background: rgba(255,255,255,0.05);
-           border: 1px solid rgba(255,255,255,0.1);
-           color: #cbd5e1;
+           background: transparent;
+           border: 1px solid #cbd5e1;
+           color: #475569;
            padding: 0.6rem 1.2rem;
            border-radius: 12px;
            font-size: 0.9rem;
-           font-weight: 500;
+           font-weight: 600;
            cursor: pointer;
            transition: all 0.2s;
         }
 
         .dash-logout-btn:hover {
-           background: rgba(239,68,68,0.1);
-           color: #f87171;
-           border-color: rgba(239,68,68,0.2);
+           background: #f1f5f9;
+           color: #ef4444;
+           border-color: #fca5a5;
         }
 
         /* --- LAYOUT GRID --- */
@@ -821,19 +823,25 @@ const FarmerDashboard = () => {
         }
 
         .dash-stat-card {
-           background: rgba(30,41,59,0.5);
-           backdrop-filter: blur(12px);
-           border: 1px solid rgba(255,255,255,0.05);
+           background: #ffffff;
+           border: 1px solid #e2e8f0;
            border-radius: 16px;
            padding: 1.5rem;
            display: flex;
            align-items: center;
            gap: 1.2rem;
-           transition: transform 0.2s;
+           box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+           transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .dash-stat-card:hover {
+           transform: translateY(-2px);
+           box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
         .dash-stat-card.border-glow-warning {
-           border-color: rgba(245,158,11,0.2);
+           border-color: #fcd34d;
+           background: #fffbeb;
         }
 
         .stat-icon-wrap {
@@ -848,7 +856,7 @@ const FarmerDashboard = () => {
         .stat-label {
            margin: 0 0 0.2rem 0;
            font-size: 0.85rem;
-           color: #94a3b8;
+           color: #64748b;
            font-weight: 500;
         }
 
@@ -856,13 +864,14 @@ const FarmerDashboard = () => {
            margin: 0;
            font-size: 1.5rem;
            font-weight: 700;
-           color: white;
+           color: #0f172a;
            line-height: 1;
         }
 
         .stat-sub {
            font-size: 1rem;
-           color: #64748b;
+           color: #94a3b8;
+           font-weight: 500;
         }
 
         /* --- FIELDS LIST --- */
@@ -876,10 +885,11 @@ const FarmerDashboard = () => {
         .dash-section-title {
            font-size: 1.4rem;
            margin: 0 0 0.2rem 0;
+           color: #0f172a;
         }
 
         .dash-section-sub {
-           color: #94a3b8;
+           color: #64748b;
            font-size: 0.9rem;
            margin: 0;
         }
@@ -889,16 +899,16 @@ const FarmerDashboard = () => {
            display: flex;
            gap: 1rem;
            margin-bottom: 2rem;
-           border-bottom: 1px solid rgba(255,255,255,0.05);
+           border-bottom: 1px solid #e2e8f0;
            padding-bottom: 0.5rem;
         }
 
         .dash-tab {
            background: transparent;
            border: none;
-           color: #94a3b8;
+           color: #64748b;
            font-size: 1rem;
-           font-weight: 500;
+           font-weight: 600;
            padding: 0.5rem 1rem;
            cursor: pointer;
            display: flex;
@@ -908,7 +918,7 @@ const FarmerDashboard = () => {
            position: relative;
         }
 
-        .dash-tab:hover { color: white; }
+        .dash-tab:hover { color: #0f172a; }
         
         .dash-tab.active {
            color: #10b981;
@@ -922,7 +932,6 @@ const FarmerDashboard = () => {
            height: 2px;
            background: #10b981;
            border-radius: 2px 2px 0 0;
-           box-shadow: 0 -2px 10px rgba(16,185,129,0.5);
         }
 
         /* --- FIELDS LIST --- */
@@ -933,13 +942,13 @@ const FarmerDashboard = () => {
         }
 
         .dash-smart-card {
-           background: rgba(30,41,59,0.5);
-           backdrop-filter: blur(12px);
-           border: 1px solid rgba(255,255,255,0.05);
+           background: #ffffff;
+           border: 1px solid #e2e8f0;
            border-radius: 16px;
            padding: 1.25rem;
            cursor: pointer;
-           transition: all 0.3s;
+           box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+           transition: all 0.2s ease-out;
            display: flex;
            flex-direction: column;
            gap: 1.2rem;
@@ -947,8 +956,8 @@ const FarmerDashboard = () => {
 
         .dash-smart-card:hover {
            transform: translateY(-4px);
-           border-color: rgba(16,185,129,0.3);
-           box-shadow: 0 10px 30px rgba(0,0,0,0.2), 0 0 20px rgba(16,185,129,0.05);
+           border-color: #a7f3d0;
+           box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
 
         .dash-smart-card.needs-action {
@@ -956,7 +965,7 @@ const FarmerDashboard = () => {
         }
 
         .dash-smart-card.needs-action:hover {
-           border-color: rgba(245,158,11,0.5);
+           border-color: #fcd34d;
         }
 
         .card-top-row {
@@ -981,28 +990,29 @@ const FarmerDashboard = () => {
         }
 
         .card-icon-box.configured {
-           background: rgba(16,185,129,0.2);
-           color: #10b981;
+           background: #d1fae5;
+           color: #059669;
         }
 
         .card-icon-box.pending {
-           background: rgba(245,158,11,0.1);
-           color: #fbbf24;
+           background: #fef3c7;
+           color: #d97706;
         }
 
         .card-field-name {
            font-size: 1.1rem;
            font-weight: 600;
            margin: 0 0 0.3rem 0;
-           color: white;
+           color: #0f172a;
         }
 
         .card-field-chip {
            font-size: 0.75rem;
-           background: rgba(255,255,255,0.1);
+           background: #f1f5f9;
            padding: 0.2rem 0.6rem;
            border-radius: 6px;
-           color: #cbd5e1;
+           color: #475569;
+           font-weight: 500;
            display: inline-block;
         }
 
@@ -1014,18 +1024,18 @@ const FarmerDashboard = () => {
            padding: 0.2rem;
         }
 
-        .card-menu-btn:hover { color: white; }
+        .card-menu-btn:hover { color: #0f172a; }
 
         .card-dropdown {
            position: absolute;
            top: 100%; right: 0;
-           background: #1e293b;
-           border: 1px solid rgba(255,255,255,0.1);
+           background: #ffffff;
+           border: 1px solid #e2e8f0;
            border-radius: 8px;
            padding: 0.5rem;
            z-index: 20;
            width: 120px;
-           box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+           box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
         .dropdown-action-del {
@@ -1036,15 +1046,16 @@ const FarmerDashboard = () => {
            padding: 0.5rem;
            background: transparent;
            border: none;
-           color: #f87171;
+           color: #ef4444;
            font-size: 0.9rem;
+           font-weight: 500;
            cursor: pointer;
            border-radius: 6px;
            text-align: left;
         }
 
         .dropdown-action-del:hover {
-           background: rgba(239,68,68,0.1);
+           background: #fef2f2;
         }
 
         .progress-container {
@@ -1058,12 +1069,12 @@ const FarmerDashboard = () => {
            margin-bottom: 0.4rem;
         }
 
-        .prog-label { color: #94a3b8; }
-        .prog-val { color: #10b981; font-weight: 600; }
+        .prog-label { color: #64748b; font-weight: 500; }
+        .prog-val { color: #059669; font-weight: 700; }
 
         .progress-bar-bg {
            height: 6px;
-           background: rgba(255,255,255,0.05);
+           background: #e2e8f0;
            border-radius: 3px;
            overflow: hidden;
         }
@@ -1079,35 +1090,37 @@ const FarmerDashboard = () => {
            display: flex;
            align-items: center;
            gap: 0.4rem;
-           color: #fbbf24;
+           color: #d97706;
            font-size: 0.85rem;
-           background: rgba(245,158,11,0.1);
+           font-weight: 500;
+           background: #fef3c7;
            padding: 0.6rem;
            border-radius: 8px;
-           border: 1px dashed rgba(245,158,11,0.3);
+           border: 1px dashed #fcd34d;
         }
 
         .card-bottom-row {
            display: flex;
            justify-content: space-between;
            align-items: center;
-           border-top: 1px solid rgba(255,255,255,0.05);
+           border-top: 1px solid #f1f5f9;
            padding-top: 1rem;
         }
 
         .card-date-added {
            font-size: 0.8rem;
            color: #64748b;
+           font-weight: 500;
         }
 
         .card-arrow {
            width: 28px; height: 28px;
            border-radius: 50%;
-           background: rgba(255,255,255,0.05);
+           background: #f1f5f9;
            display: flex;
            align-items: center;
            justify-content: center;
-           color: #cbd5e1;
+           color: #94a3b8;
            transition: all 0.2s;
         }
 
@@ -1119,12 +1132,12 @@ const FarmerDashboard = () => {
 
         /* --- RIGHT COLUMN WIDGETS --- */
         .dash-widget {
-           background: rgba(30,41,59,0.5);
-           backdrop-filter: blur(12px);
-           border: 1px solid rgba(255,255,255,0.05);
+           background: #ffffff;
+           border: 1px solid #e2e8f0;
            border-radius: 16px;
            padding: 1.5rem;
            margin-bottom: 1.5rem;
+           box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
         }
 
         .widget-header {
@@ -1136,7 +1149,8 @@ const FarmerDashboard = () => {
 
         .widget-title {
            font-size: 1.1rem;
-           font-weight: 600;
+           font-weight: 700;
+           color: #0f172a;
            margin: 0;
            display: flex;
            align-items: center;
@@ -1153,15 +1167,16 @@ const FarmerDashboard = () => {
 
         .weather-temp {
            font-size: 2.5rem;
+           color: #0f172a;
            margin: 0;
            line-height: 1;
         }
 
         .weather-desc {
-           color: #fbbf24;
+           color: #d97706;
            margin: 0.2rem 0 0 0;
            font-size: 0.9rem;
-           font-weight: 500;
+           font-weight: 600;
         }
 
         .weather-icon-anim {
@@ -1184,10 +1199,12 @@ const FarmerDashboard = () => {
            align-items: center;
            gap: 0.5rem;
            font-size: 0.85rem;
-           color: #cbd5e1;
-           background: rgba(255,255,255,0.03);
+           font-weight: 500;
+           color: #475569;
+           background: #f8fafc;
            padding: 0.6rem;
            border-radius: 8px;
+           border: 1px solid #f1f5f9;
         }
 
         /* INSIGHTS */
@@ -1207,24 +1224,25 @@ const FarmerDashboard = () => {
            border-left: 3px solid transparent;
         }
 
-        .insight-item p { margin: 0; color: #cbd5e1; }
-        .insight-item b { color: white; }
+        .insight-item p { margin: 0; color: #475569; }
+        .insight-item b { color: #0f172a; }
 
         .warning-insight {
-           background: rgba(245,158,11,0.05);
-           border-left-color: #fbbf24;
+           background: #fffbeb;
+           border-left-color: #f59e0b;
         }
-        .warning-insight .insight-icon { color: #fbbf24; }
+        .warning-insight .insight-icon { color: #f59e0b; }
 
         .success-insight {
-           background: rgba(16,185,129,0.05);
+           background: #ecfdf5;
            border-left-color: #10b981;
         }
         .success-insight .insight-icon { color: #10b981; }
 
         .info-insight {
-           background: rgba(255,255,255,0.02);
-           border: 1px solid rgba(255,255,255,0.05);
+           background: #f8fafc;
+           border: 1px solid #e2e8f0;
+           box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         }
 
         /* --- NOTIFICATIONS TOGGLE --- */
@@ -1242,13 +1260,13 @@ const FarmerDashboard = () => {
         }
 
         .dash-notify-toggle.on {
-           background: rgba(59,130,246,0.1);
-           color: #60a5fa;
-           border-color: rgba(59,130,246,0.2);
+           background: #dbeafe;
+           color: #2563eb;
+           border-color: #bfdbfe;
         }
 
         .dash-notify-toggle.off {
-           background: rgba(255,255,255,0.05);
+           background: #f1f5f9;
            color: #64748b;
         }
 
@@ -1273,17 +1291,19 @@ const FarmerDashboard = () => {
            justify-content: space-between;
            align-items: center;
            padding: 0.8rem 0;
-           border-bottom: 1px dashed rgba(255,255,255,0.05);
+           border-bottom: 1px dashed #e2e8f0;
         }
         .market-row:last-child { border-bottom: none; padding-bottom: 0; }
 
         .market-label {
-           color: #cbd5e1;
+           color: #475569;
            font-size: 0.9rem;
+           font-weight: 500;
         }
 
         .market-price {
-           font-weight: 600;
+           font-weight: 700;
+           color: #0f172a;
            font-size: 1.05rem;
            display: flex;
            align-items: baseline;
@@ -1293,26 +1313,29 @@ const FarmerDashboard = () => {
         .market-price small {
            font-size: 0.75rem;
            color: #64748b;
+           font-weight: 600;
         }
 
-        .market-price.up small { color: #10b981; }
-        .market-price.down small { color: #f87171; }
+        .market-price.up small { color: #059669; }
+        .market-price.down small { color: #dc2626; }
 
         /* --- TELEMETRY --- */
         .telemetry-widget {
-           background: #0f172a;
-           border: 1px solid #1e293b;
+           background: #f8fafc;
+           border: 1px solid #e2e8f0;
            padding: 1rem;
            font-family: 'Consolas', 'Courier New', monospace;
+           box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.02);
         }
 
         .telemetry-header {
            display: flex;
            align-items: center;
            gap: 0.5rem;
-           font-size: 0.8rem;
+           font-size: 0.85rem;
+           font-weight: 600;
            color: #64748b;
-           border-bottom: 1px dashed rgba(255,255,255,0.1);
+           border-bottom: 1px dashed #cbd5e1;
            padding-bottom: 0.5rem;
            margin-bottom: 1rem;
         }
@@ -1325,11 +1348,11 @@ const FarmerDashboard = () => {
         }
 
         .telemetry-row { display: flex; gap: 0.5rem; animation: fade-in 0.5s ease-out; }
-        .telemetry-time { color: #64748b; min-width: 70px; }
+        .telemetry-time { color: #94a3b8; min-width: 70px; }
         
-        .telemetry-row.info .telemetry-msg { color: #93c5fd; }
-        .telemetry-row.success .telemetry-msg { color: #34d399; }
-        .telemetry-row.warn .telemetry-msg { color: #fbbf24; }
+        .telemetry-row.info .telemetry-msg { color: #3b82f6; }
+        .telemetry-row.success .telemetry-msg { color: #059669; }
+        .telemetry-row.warn .telemetry-msg { color: #d97706; }
 
         @keyframes fade-in {
            from { opacity: 0; transform: translateY(-5px); }
@@ -1347,14 +1370,15 @@ const FarmerDashboard = () => {
            display: flex;
            align-items: flex-start;
            gap: 0.8rem;
-           background: rgba(255,255,255,0.03);
-           border: 1px solid rgba(255,255,255,0.05);
+           background: #ffffff;
+           border: 1px solid #e2e8f0;
            padding: 0.8rem;
            border-radius: 10px;
+           box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         }
 
         .task-item.high-priority {
-           border-left: 3px solid #f87171;
+           border-left: 3px solid #ef4444;
         }
 
         .task-item.med-priority {
@@ -1368,19 +1392,21 @@ const FarmerDashboard = () => {
         .task-content h4 {
            margin: 0 0 0.2rem 0;
            font-size: 0.95rem;
-           font-weight: 500;
+           font-weight: 600;
+           color: #0f172a;
         }
 
         .task-content span {
            font-size: 0.75rem;
            color: #64748b;
+           font-weight: 500;
         }
 
         /* --- MAP PLACEHOLDER --- */
         .map-placeholder-container {
            height: 500px;
-           background: rgba(15,23,42,0.8);
-           border: 1px solid rgba(16,185,129,0.3);
+           background: #ffffff;
+           border: 1px dashed #cbd5e1;
            border-radius: 16px;
            display: flex;
            flex-direction: column;
@@ -1394,9 +1420,12 @@ const FarmerDashboard = () => {
         .map-overlay-glow {
            position: absolute;
            top: 0; left: 0; right: 0; bottom: 0;
-           background: radial-gradient(circle at center, rgba(16,185,129,0.1) 0%, transparent 70%);
+           background: radial-gradient(circle at center, rgba(16,185,129,0.05) 0%, transparent 70%);
            pointer-events: none;
         }
+
+        .map-placeholder-container h3 { color: #0f172a; margin: 0.5rem 0; font-weight: 700; }
+        .map-placeholder-container p { color: #64748b; font-weight: 500; }
 
         .bounce-anim {
            animation: bounce 2s infinite;
@@ -1407,22 +1436,23 @@ const FarmerDashboard = () => {
         }
 
         .dash-btn-outline {
-           background: transparent;
-           border: 1px solid #10b981;
-           color: #10b981;
+           background: #ffffff;
+           border: 2px solid #10b981;
+           color: #059669;
            padding: 0.8rem 1.5rem;
            border-radius: 10px;
            cursor: pointer;
+           font-weight: 600;
            transition: all 0.2s;
         }
         .dash-btn-outline:hover {
-           background: rgba(16,185,129,0.1);
+           background: #ecfdf5;
         }
 
         /* --- EMPTY & LOADING STATES --- */
         .dash-empty-state {
            grid-column: 1 / -1;
-           border: 1px dashed rgba(255,255,255,0.2);
+           border: 2px dashed #cbd5e1;
            border-radius: 16px;
            padding: 4rem 2rem;
            text-align: center;
@@ -1430,19 +1460,19 @@ const FarmerDashboard = () => {
            flex-direction: column;
            align-items: center;
            gap: 1rem;
-           background: rgba(30,41,59,0.2);
+           background: #ffffff;
         }
 
         .empty-icon-circle {
            width: 80px; height: 80px;
            border-radius: 50%;
-           background: rgba(16,185,129,0.1);
+           background: #ecfdf5;
            display: flex; align-items: center; justify-content: center;
            margin-bottom: 0.5rem;
         }
 
-        .dash-empty-state h3 { font-size: 1.5rem; margin: 0; }
-        .dash-empty-state p { color: #94a3b8; margin: 0; max-width: 300px; }
+        .dash-empty-state h3 { font-size: 1.5rem; margin: 0; color: #0f172a; font-weight: 700; }
+        .dash-empty-state p { color: #64748b; margin: 0; max-width: 300px; font-weight: 500; }
 
         .dash-btn-primary {
            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -1456,11 +1486,12 @@ const FarmerDashboard = () => {
            align-items: center;
            gap: 0.5rem;
            cursor: pointer;
+           box-shadow: 0 4px 6px -1px rgb(16 185 129 / 0.3);
            transition: all 0.2s;
         }
         .dash-btn-primary:hover {
            transform: translateY(-2px);
-           box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+           box-shadow: 0 10px 15px -3px rgb(16 185 129 / 0.4);
         }
 
         .dash-loading-state {
@@ -1470,7 +1501,8 @@ const FarmerDashboard = () => {
            justify-content: center;
            padding: 5rem;
            gap: 1rem;
-           color: #94a3b8;
+           color: #64748b;
+           font-weight: 500;
         }
 
         /* --- FAB --- */
@@ -1483,7 +1515,7 @@ const FarmerDashboard = () => {
            color: white;
            border: none;
            display: flex; align-items: center; justify-content: center;
-           box-shadow: 0 8px 25px rgba(16,185,129,0.3);
+           box-shadow: 0 10px 15px -3px rgb(16 185 129 / 0.4);
            cursor: pointer;
            z-index: 100;
            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1491,7 +1523,7 @@ const FarmerDashboard = () => {
 
         .dash-fab:hover {
            transform: scale(1.1) rotate(90deg);
-           box-shadow: 0 12px 30px rgba(16,185,129,0.4);
+           box-shadow: 0 20px 25px -5px rgb(16 185 129 / 0.5);
         }
 
         /* Responsive Fixes */

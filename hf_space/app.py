@@ -4,6 +4,7 @@ import joblib
 import json
 import os
 import xgboost
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -15,6 +16,7 @@ YIELD_MODEL_PATH = os.path.join(MODEL_DIR, 'sugarcane_yield_model.pkl')
 YIELD_COLUMNS_PATH = os.path.join(MODEL_DIR, 'model_columns.json')
 HARVEST_MODEL_PATH = os.path.join(MODEL_DIR, 'harvest_duration_model.pkl')
 HARVEST_COLUMNS_PATH = os.path.join(MODEL_DIR, 'harvest_model_columns.json')
+PRICE_MODEL_PATH = os.path.join(MODEL_DIR, 'best_price_model.pkl')
 
 # Load Yield Model
 yield_model = None
@@ -41,6 +43,16 @@ try:
         print("Harvest Model loaded successfully.")
 except Exception as e:
     print(f"Error loading harvest model: {e}")
+
+# Load Price Model
+price_model = None
+try:
+    if os.path.exists(PRICE_MODEL_PATH):
+        print(f"Loading price model from {PRICE_MODEL_PATH}")
+        price_model = joblib.load(PRICE_MODEL_PATH)
+        print("Price Model loaded successfully.")
+except Exception as e:
+    print(f"Error loading price model: {e}")
 
 def prepare_input_vector(input_data, columns):
     vector = [0] * len(columns)
@@ -82,6 +94,7 @@ def health_check():
         "status": "healthy", 
         "yield_model_loaded": yield_model is not None,
         "harvest_model_loaded": harvest_model is not None,
+        "price_model_loaded": price_model is not None,
         "xgboost_version": xgboost.__version__
     })
 
@@ -106,6 +119,26 @@ def predict_harvest():
         input_vector = prepare_input_vector(data, harvest_model_columns)
         prediction = float(harvest_model.predict(input_vector)[0])
         return jsonify({"predicted_harvest_days": round(prediction)})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/predict-price', methods=['POST'])
+def predict_price():
+    if not price_model:
+        return jsonify({"error": "Price Model not loaded"}), 500
+    try:
+        data = request.json
+        df = pd.DataFrame([data])
+        
+        drop_cols = ['Target', 'Price_Per_Ton', 'Total_Revenue_INR', 'Yield_Tonnes_Ha', 
+                     'District', 'Village_Cluster', 'Latitude', 'Longitude', 
+                     'Planting_Date', 'Harvest_Date', 'Area_Harvested_Ha']
+        for col in drop_cols:
+            if col in df.columns:
+                df = df.drop(columns=[col])
+                
+        prediction = float(price_model.predict(df)[0])
+        return jsonify({"predicted_price_per_ton": round(prediction, 2)})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

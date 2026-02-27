@@ -58,5 +58,18 @@ def predict_harvest():
     except Exception as e:
         return jsonify({"error": "Proxy Error", "details": str(e)}), 502
 
+@app.route('/api/predict-price', methods=['POST'])
+def predict_price():
+    if not HF_API_URL:
+        return jsonify({"error": "HF_API_URL environment variable not set"}), 500
+
+    try:
+        payload = request.json
+        hf_endpoint = f"{HF_API_URL}/predict-price"
+        response = requests.post(hf_endpoint, json=payload)
+        return jsonify(response.json()), response.status_code
+    except Exception as e:
+        return jsonify({"error": "Proxy Error", "details": str(e)}), 502
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
