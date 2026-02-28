@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const TALUKAS = ['Akole', 'Sangamner', 'Kopargaon', 'Rahata', 'Shrirampur', 'Nevasa', 'Shevgaon', 'Pathardi', 'Jamkhed', 'Karjat', 'Shrigonda', 'Parner', 'Ahmednagar', 'Rahuri']
 const SEASONS = ['Suru', 'Pre-seasonal', 'Adsali']
@@ -7,6 +8,7 @@ const SOIL_TYPES = ['Black Cotton', 'Clay Loam', 'Sandy Loam', 'Medium Black']
 const IRRIGATION_METHODS = ['Drip', 'Flood', 'Rainfed']
 
 const FieldConfigurationForm = ({ initialData, onSave, saving, onFindOnMap }) => {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     taluka: '',
     season: '',
@@ -48,58 +50,58 @@ const FieldConfigurationForm = ({ initialData, onSave, saving, onFindOnMap }) =>
       <div className="form-grid">
         {/* Taluka */}
         <div className="form-group">
-          <label>Taluka</label>
+          <label>{t('fieldDetails.config.taluka')}</label>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
              <select name="taluka" value={formData.taluka} onChange={handleChange} required style={{ flex: 1 }}>
-                <option value="">Select Taluka</option>
+                <option value="">{t('fieldDetails.config.selectTaluka')}</option>
                 {TALUKAS.map(t => <option key={t} value={t}>{t}</option>)}
              </select>
              <button type="button" onClick={onFindOnMap} className="btn-secondary" style={{ fontSize: '1.2rem'}} title="Find on Map">
                 🗺️
              </button>
           </div>
-          <small style={{ color: '#666' }}>Or click map icon to auto-detect.</small>
+          <small style={{ color: '#666' }}>{t('fieldDetails.config.orAutoDetect')}</small>
         </div>
 
         {/* Season */}
         <div className="form-group">
-          <label>Season</label>
+          <label>{t('fieldDetails.config.season')}</label>
           <select name="season" value={formData.season} onChange={handleChange} required>
-             <option value="">Select Season</option>
+             <option value="">{t('fieldDetails.config.selectSeason')}</option>
              {SEASONS.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
 
         {/* Variety */}
         <div className="form-group">
-          <label>Sugarcane Variety</label>
+          <label>{t('fieldDetails.config.variety')}</label>
           <select name="variety" value={formData.variety} onChange={handleChange} required>
-             <option value="">Select Variety</option>
+             <option value="">{t('fieldDetails.config.selectVariety')}</option>
              {VARIETIES.map(v => <option key={v} value={v}>{v}</option>)}
           </select>
         </div>
 
         {/* Soil Type */}
         <div className="form-group">
-          <label>Soil Type</label>
+          <label>{t('fieldDetails.config.soilType')}</label>
           <select name="soil_type" value={formData.soil_type} onChange={handleChange} required>
-             <option value="">Select Soil Type</option>
+             <option value="">{t('fieldDetails.config.selectSoilType')}</option>
              {SOIL_TYPES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
 
         {/* Irrigation */}
         <div className="form-group">
-          <label>Irrigation Method</label>
+          <label>{t('fieldDetails.config.irrigationMethod')}</label>
           <select name="irrigation_method" value={formData.irrigation_method} onChange={handleChange} required>
-             <option value="">Select Method</option>
+             <option value="">{t('fieldDetails.config.selectMethod')}</option>
              {IRRIGATION_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
           </select>
         </div>
 
         {/* Planting Date */}
         <div className="form-group">
-          <label>Planting Date</label>
+          <label>{t('fieldDetails.config.plantingDate')}</label>
           <input 
             type="date" 
             name="planting_date" 
@@ -111,7 +113,7 @@ const FieldConfigurationForm = ({ initialData, onSave, saving, onFindOnMap }) =>
 
         {/* Area Size (Acres) - Note: This technically belongs to 'fields' table but handled here for UI convienience */}
         <div className="form-group">
-            <label>Field Area (Acres)</label>
+            <label>{t('fieldDetails.config.fieldArea')}</label>
             <input 
                 type="number" 
                 step="0.01"
@@ -128,7 +130,7 @@ const FieldConfigurationForm = ({ initialData, onSave, saving, onFindOnMap }) =>
 
       <div className="form-actions">
         <button type="submit" className="save-btn" disabled={saving}>
-          {saving ? 'Saving...' : 'Save Configuration'}
+          {saving ? t('fieldDetails.config.savingBtn') : t('fieldDetails.config.saveBtn')}
         </button>
       </div>
     </form>

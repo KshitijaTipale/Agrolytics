@@ -1,0 +1,117 @@
+{
+  "header": {
+    "welcomeBack": "Welcome back",
+    "smsAlertsOn": "SMS Alerts On",
+    "smsAlertsOff": "SMS Alerts Off",
+    "systemSecure": "System Secure & Active",
+    "logout": "Logout"
+  },
+  "loading": "Loading your farm data...",
+  "stats": {
+    "totalFields": "Total Fields",
+    "aiMonitored": "AI Monitored",
+    "actionNeeded": "Action Needed"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "spatialView": "Spatial View",
+    "mapInitializing": "Geospatial Array Initializing",
+    "mapAwating": "Awaiting highly detailed Leaflet satellite topography.",
+    "addNewBoundary": "Add New Boundary Polygon"
+  },
+  "fields": {
+    "yourFields": "Your Fields",
+    "selectField": "Select a field to view AI predictions and satellite data.",
+    "noFieldsRegistered": "No Fields Registered",
+    "addFieldPrompt": "Add your first field to unlock AI-powered insights and predictions.",
+    "addField": "Add Field",
+    "delete": "Delete",
+    "growthPhase": "Growth Phase",
+    "setupRequired": "Setup Required (Area & Date)",
+    "added": "Added"
+  },
+  "widgets": {
+    "localConditions": "Local Conditions",
+    "rainPossible": "Rain Possible",
+    "clearSunny": "Clear & Sunny",
+    "hum": "Hum",
+    "min": "Min",
+    "rain": "Rain",
+    "upcomingTasks": "Upcoming Agronomic Tasks",
+    "configurePending": "Configure Pending Fields",
+    "immediateSetup": "Immediate • Setup Phase",
+    "field": "Field:",
+    "cropVarieties": "Crop Varieties",
+    "aiInsights": "AI Insights",
+    "actionRequiredPending": "Action Required: You have {{count}} unconfigured field(s). Complete setup to unlock yield AI predictions.",
+    "allFieldsConfigured": "All fields are successfully configured and being monitored by satellite.",
+    "marketIntelligence": "Market Intelligence",
+    "frp": "FRP (Gov. Minimum)",
+    "localMillAvg": "Local Sugar Mill Avg",
+    "jaggeryRate": "Jaggery Rate (Est)"
+  },
+  "fieldDetails": {
+    "nav": {
+      "allFields": "← All Fields",
+      "dashboard": "Field Dashboard",
+      "map": "Map Your Field",
+      "config": "Configuration",
+      "logout": "Logout"
+    },
+    "header": {
+      "sugarcaneField": "Sugarcane Field",
+      "ownedBy": "Owned By"
+    },
+    "map": {
+      "title": "Map Your Field",
+      "desc": "Draw your field boundaries to calculate exact acreage."
+    },
+    "config": {
+      "title": "Farm Configuration",
+      "desc": "Setup your crop details (Soil, Season, Variety) here to enable accurate yield predictions.",
+      "taluka": "Taluka",
+      "selectTaluka": "Select Taluka",
+      "orAutoDetect": "Or click map icon to auto-detect.",
+      "season": "Season",
+      "selectSeason": "Select Season",
+      "variety": "Sugarcane Variety",
+      "selectVariety": "Select Variety",
+      "soilType": "Soil Type",
+      "selectSoilType": "Select Soil Type",
+      "irrigationMethod": "Irrigation Method",
+      "selectMethod": "Select Method",
+      "plantingDate": "Planting Date",
+      "fieldArea": "Field Area (Acres)",
+      "saveBtn": "Save Configuration",
+      "savingBtn": "Saving..."
+    },
+    "prediction": {
+      "setupRequired": "Setup Required ⚠️",
+      "goToConfig": "Go to the Configuration Tab to complete your field details.",
+      "fieldIntelligence": "Field Intelligence",
+      "cropAge": "Crop Age: {{age}} Days",
+      "yieldPotential": "Yield Potential",
+      "analyzing": "Analyzing...",
+      "tonsPerAcre": "Tons / Acre",
+      "vsRegionalAvg": "vs Regional Avg",
+      "predictedPrice": "Predicted Market Price",
+      "perTon": "/ Ton",
+      "estRevenue": "Est. Total Revenue",
+      "expectedHarvest": "Expected Harvest",
+      "tons": "Tons",
+      "forAcres": "For {{acres}} Acres",
+      "optimalHarvestDate": "Optimal Harvest Date",
+      "days": "Day(s)",
+      "moistureRisk": "Moisture Risk",
+      "avgRainfall": "Avg Rainfall",
+      "mm": "mm",
+      "regionalAverage": "Regional Average",
+      "regionalHistory": "Regional Performance History",
+      "trendsDesc": "5-Year Yield & Price trends for {{taluka}}",
+      "yieldLabel": "Yield",
+      "priceLabel": "Price",
+      "chartYield": "Yield (T/Ac)",
+      "chartPrice": "Price (₹/T)"
+    }
+  }
+}

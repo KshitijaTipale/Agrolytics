@@ -17,6 +17,7 @@ import {
   Waves
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useTranslation } from 'react-i18next';
 import talukaStats from '../data/taluka_stats.json';
 
 // Build weather data from real dataset averages (taluka_stats.json)
@@ -36,6 +37,7 @@ const getWeatherForTaluka = (taluka) => {
 };
 
 const PredictionPanel = ({ details }) => {
+  const { t } = useTranslation();
   const [prediction, setPrediction] = useState(null);
   const [pricePrediction, setPricePrediction] = useState(null);
   const [harvestPrediction, setHarvestPrediction] = useState(null);
@@ -147,9 +149,9 @@ const PredictionPanel = ({ details }) => {
           <div className="bento-wrapper">
               <div className="bento-card hero-card" style={{ background: '#FFF3E0', border: '1px solid #FFB74D' }}>
                   <div style={{ textAlign: 'center', padding: '2rem' }}>
-                      <h2 style={{ color: '#E65100' }}>Setup Required ⚠️</h2>
+                      <h2 style={{ color: '#E65100' }}>{t('fieldDetails.prediction.setupRequired')}</h2>
                       <p style={{ margin: '1rem 0', color: '#5D4037' }}>{error}</p>
-                      <p style={{ fontSize: '0.9rem' }}>Go to the <strong>Configuration Tab</strong> to complete your field details.</p>
+                      <p style={{ fontSize: '0.9rem' }}>{t('fieldDetails.prediction.goToConfig')}</p>
                   </div>
               </div>
           </div>
@@ -174,7 +176,7 @@ const PredictionPanel = ({ details }) => {
       const diffAbs = Math.abs(percentDiff).toFixed(1);
       
       benchmarkBadge = {
-          text: `${isAbove ? '↑' : '↓'} ${diffAbs}% vs Regional Avg`,
+          text: `${isAbove ? '↑' : '↓'} ${diffAbs}% ${t('fieldDetails.prediction.vsRegionalAvg')}`,
           color: isAbove ? '#10b981' : '#ef4444',
           bg: isAbove ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
           icon: isAbove ? <TrendingUp size={14} /> : <TrendingDown size={14} />,
@@ -277,7 +279,7 @@ const PredictionPanel = ({ details }) => {
       {/* Header Section */}
       <div className="bento-header">
         <div>
-          <h2 className="text-gradient">Field Intelligence</h2>
+          <h2 className="text-gradient">{t('fieldDetails.prediction.fieldIntelligence')}</h2>
           <div className="weather-pill">
             <MapPin size={14} /> {details.taluka} | <ThermometerSun size={14} /> {currentWeather.Avg_Max_Temp_Celsius}°C
           </div>
@@ -296,7 +298,7 @@ const PredictionPanel = ({ details }) => {
              <div style={{ flex: 1, marginLeft: '1.5rem' }}>
                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.25rem' }}>
                     <h3 style={{ margin: 0, color: '#1e293b', fontSize: '1.2rem', fontWeight: 700 }}>{agronomicAlert.title}</h3>
-                    <span style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: 600 }}>Crop Age: {agronomicAlert.age} Days</span>
+                    <span style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: 600 }}>{t('fieldDetails.prediction.cropAge', { age: agronomicAlert.age })}</span>
                  </div>
                  <p style={{ margin: 0, color: '#475569', fontSize: '1rem', lineHeight: '1.5' }}>{agronomicAlert.action}</p>
              </div>
@@ -312,14 +314,14 @@ const PredictionPanel = ({ details }) => {
               <div className="command-item">
                   <span className="command-label">
                      <div className="icon-box" style={{ width: '36px', height: '36px', background: '#ecfdf5', color: '#10b981', borderRadius: '10px' }}><Leaf size={20} /></div>
-                     Yield Potential
+                     {t('fieldDetails.prediction.yieldPotential')}
                   </span>
                   
-                  {loading ? <span className="loader-text" style={{ fontSize: '2rem' }}>Analyzing...</span> : (
+                  {loading ? <span className="loader-text" style={{ fontSize: '2rem' }}>{t('fieldDetails.prediction.analyzing')}</span> : (
                       <>
                           <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
                               <h1 className="command-value" style={{ color: '#10b981' }}>{yieldPerAcre}</h1>
-                              <span className="command-unit">Tons / Acre</span>
+                              <span className="command-unit">{t('fieldDetails.prediction.tonsPerAcre')}</span>
                           </div>
                           
                           {benchmarkBadge && (
@@ -340,14 +342,14 @@ const PredictionPanel = ({ details }) => {
               <div className="command-item">
                   <span className="command-label">
                      <div className="icon-box" style={{ width: '36px', height: '36px', background: '#eff6ff', color: '#3b82f6', borderRadius: '10px' }}><IndianRupee size={20} /></div>
-                     Predicted Market Price
+                     {t('fieldDetails.prediction.predictedPrice')}
                   </span>
                   
-                  {loading ? <span className="loader-text" style={{ fontSize: '2rem' }}>Analyzing...</span> : (
+                  {loading ? <span className="loader-text" style={{ fontSize: '2rem' }}>{t('fieldDetails.prediction.analyzing')}</span> : (
                       <>
                           <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
                               <h1 className="command-value" style={{ color: '#3b82f6' }}>₹{predictedPrice}</h1>
-                              <span className="command-unit">/ Ton</span>
+                              <span className="command-unit">{t('fieldDetails.prediction.perTon')}</span>
                           </div>
                           
                           {/* Inner Revenue Pillar */}
@@ -357,7 +359,7 @@ const PredictionPanel = ({ details }) => {
                               justifyContent: 'space-between', alignItems: 'center'
                           }}>
                               <div>
-                                  <span style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Est. Total Revenue</span>
+                                  <span style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t('fieldDetails.prediction.estRevenue')}</span>
                                   <h3 style={{ margin: '0.2rem 0 0 0', color: '#0f172a', fontSize: '1.4rem' }}>₹{estimatedRevenue}</h3>
                               </div>
                               <Banknote size={28} color="#94a3b8" />
@@ -375,9 +377,9 @@ const PredictionPanel = ({ details }) => {
         <div className="bento-card" style={{ background: '#fff7ed', borderColor: '#ffedd5' }}>
            <div className="icon-box" style={{ background: '#ffedd5', color: '#ea580c' }}><Sprout size={24} /></div>
            <div style={{ marginTop: '1.5rem' }}>
-             <span className="card-label" style={{ color: '#9a3412', marginBottom: '0.2rem', display: 'block' }}>Expected Harvest</span>
-             <h3 style={{ fontSize: '2rem', margin: '0', color: '#c2410c', fontWeight: 800, letterSpacing: '-1px' }}>{loading ? '...' : totalYield} <span style={{ fontSize: '1.1rem', fontWeight: 600, color: '#ea580c' }}>Tons</span></h3>
-             <span style={{ fontSize: '0.9rem', color: '#fdba74', fontWeight: 500 }}>For {details.area_size} Acres</span>
+             <span className="card-label" style={{ color: '#9a3412', marginBottom: '0.2rem', display: 'block' }}>{t('fieldDetails.prediction.expectedHarvest')}</span>
+             <h3 style={{ fontSize: '2rem', margin: '0', color: '#c2410c', fontWeight: 800, letterSpacing: '-1px' }}>{loading ? '...' : totalYield} <span style={{ fontSize: '1.1rem', fontWeight: 600, color: '#ea580c' }}>{t('fieldDetails.prediction.tons')}</span></h3>
+             <span style={{ fontSize: '0.9rem', color: '#fdba74', fontWeight: 500 }}>{t('fieldDetails.prediction.forAcres', { acres: details.area_size })}</span>
            </div>
         </div>
 
@@ -385,7 +387,7 @@ const PredictionPanel = ({ details }) => {
         <div className="bento-card" style={{ background: '#f0fdf4', borderColor: '#dcfce7' }}>
            <div className="icon-box" style={{ background: '#dcfce7', color: '#16a34a' }}><Timer size={24} /></div>
            <div style={{ marginTop: '1.5rem' }}>
-             <span className="card-label" style={{ color: '#166534', marginBottom: '0.2rem', display: 'block' }}>Optimal Harvest Date</span>
+             <span className="card-label" style={{ color: '#166534', marginBottom: '0.2rem', display: 'block' }}>{t('fieldDetails.prediction.optimalHarvestDate')}</span>
              <h3 style={{ fontSize: '1.8rem', margin: '0', color: '#15803d', fontWeight: 800, letterSpacing: '-0.5px' }}>{loading ? '...' : harvestDateStr}</h3>
              
              {daysRemaining !== null && !loading && (
@@ -397,7 +399,7 @@ const PredictionPanel = ({ details }) => {
                         {harvestStatus}
                     </span>
                     <span style={{ color: '#16a34a', fontWeight: 600, fontSize: '0.9rem' }}>
-                        {daysRemaining} Day(s) 
+                        {daysRemaining} {t('fieldDetails.prediction.days')} 
                     </span>
                  </div>
              )}
@@ -410,7 +412,7 @@ const PredictionPanel = ({ details }) => {
                {soilRisk.icon}
            </div>
            <div style={{ marginTop: '1.5rem' }}>
-             <span className="card-label" style={{ color: '#475569', marginBottom: '0.2rem', display: 'block' }}>Moisture Risk</span>
+             <span className="card-label" style={{ color: '#475569', marginBottom: '0.2rem', display: 'block' }}>{t('fieldDetails.prediction.moistureRisk')}</span>
              <h3 style={{ fontSize: '1.5rem', margin: '0', color: soilRisk.color, fontWeight: 700, letterSpacing: '-0.5px' }}>{soilRisk.status}</h3>
              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.95rem', color: '#64748b', lineHeight: '1.5' }}>{soilRisk.msg}</p>
            </div>
@@ -422,9 +424,9 @@ const PredictionPanel = ({ details }) => {
         <div className="bento-card" style={{ background: '#f8fafc', borderColor: '#f1f5f9' }}>
            <div className="icon-box" style={{ background: '#e0f2fe', color: '#0284c7' }}><Droplets size={24} /></div>
            <div style={{ marginTop: '1.5rem' }}>
-             <span className="card-label" style={{ color: '#475569', marginBottom: '0.2rem', display: 'block' }}>Avg Rainfall</span>
-             <h3 style={{ fontSize: '1.8rem', margin: '0', color: '#0369a1', fontWeight: 800 }}>{currentWeather.Accumulated_Rainfall_mm} <span style={{ fontSize: '1rem', fontWeight: 600 }}>mm</span></h3>
-             <span style={{ fontSize: '0.9rem', color: '#7dd3fc', fontWeight: 500 }}>Regional Average</span>
+             <span className="card-label" style={{ color: '#475569', marginBottom: '0.2rem', display: 'block' }}>{t('fieldDetails.prediction.avgRainfall')}</span>
+             <h3 style={{ fontSize: '1.8rem', margin: '0', color: '#0369a1', fontWeight: 800 }}>{currentWeather.Accumulated_Rainfall_mm} <span style={{ fontSize: '1rem', fontWeight: 600 }}>{t('fieldDetails.prediction.mm')}</span></h3>
+             <span style={{ fontSize: '0.9rem', color: '#7dd3fc', fontWeight: 500 }}>{t('fieldDetails.prediction.regionalAverage')}</span>
            </div>
         </div>
 
@@ -432,12 +434,12 @@ const PredictionPanel = ({ details }) => {
         <div className="bento-card" style={{ gridColumn: 'span 2', background: '#ffffff', padding: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.3rem', fontWeight: 700 }}>Regional Performance History</h3>
-                    <p style={{ margin: '0.2rem 0 0 0', color: '#64748b', fontSize: '0.95rem' }}>5-Year Yield & Price trends for {details.taluka}</p>
+                    <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.3rem', fontWeight: 700 }}>{t('fieldDetails.prediction.regionalHistory')}</h3>
+                    <p style={{ margin: '0.2rem 0 0 0', color: '#64748b', fontSize: '0.95rem' }}>{t('fieldDetails.prediction.trendsDesc', { taluka: details.taluka })}</p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: '#475569', fontWeight: 500 }}><span style={{ width: '12px', height: '12px', background: '#10b981', borderRadius: '50%' }}></span> Yield</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: '#475569', fontWeight: 500 }}><span style={{ width: '12px', height: '12px', background: '#3b82f6', borderRadius: '50%' }}></span> Price</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: '#475569', fontWeight: 500 }}><span style={{ width: '12px', height: '12px', background: '#10b981', borderRadius: '50%' }}></span> {t('fieldDetails.prediction.yieldLabel')}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: '#475569', fontWeight: 500 }}><span style={{ width: '12px', height: '12px', background: '#3b82f6', borderRadius: '50%' }}></span> {t('fieldDetails.prediction.priceLabel')}</div>
                 </div>
             </div>
             
@@ -453,8 +455,8 @@ const PredictionPanel = ({ details }) => {
                             labelStyle={{ color: '#64748b', fontWeight: 500, marginBottom: '0.5rem' }}
                             cursor={{ stroke: '#e2e8f0', strokeWidth: 2, strokeDasharray: '4 4' }}
                         />
-                        <Line yAxisId="left" type="monotone" dataKey="yield" name="Yield (T/Ac)" stroke="#10b981" strokeWidth={4} dot={false} activeDot={{ r: 8, strokeWidth: 0, fill: '#10b981' }} />
-                        <Line yAxisId="right" type="monotone" dataKey="price" name="Price (₹/T)" stroke="#3b82f6" strokeWidth={4} dot={false} activeDot={{ r: 8, strokeWidth: 0, fill: '#3b82f6' }} />
+                        <Line yAxisId="left" type="monotone" dataKey="yield" name={t('fieldDetails.prediction.chartYield')} stroke="#10b981" strokeWidth={4} dot={false} activeDot={{ r: 8, strokeWidth: 0, fill: '#10b981' }} />
+                        <Line yAxisId="right" type="monotone" dataKey="price" name={t('fieldDetails.prediction.chartPrice')} stroke="#3b82f6" strokeWidth={4} dot={false} activeDot={{ r: 8, strokeWidth: 0, fill: '#3b82f6' }} />
                     </LineChart>
                 </ResponsiveContainer>
             </div>

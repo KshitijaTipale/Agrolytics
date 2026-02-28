@@ -1,0 +1,117 @@
+{
+  "header": {
+    "welcomeBack": "सुस्वागतम",
+    "smsAlertsOn": "SMS अलर्ट सुरू",
+    "smsAlertsOff": "SMS अलर्ट बंद",
+    "systemSecure": "प्रणाली सुरक्षित आणि सक्रिय",
+    "logout": "लॉग आउट"
+  },
+  "loading": "तुमचा शेताचा डेटा लोड होत आहे...",
+  "stats": {
+    "totalFields": "एकूण शेती",
+    "aiMonitored": "AI द्वारे संनियंत्रित",
+    "actionNeeded": "कृती आवश्यक"
+  },
+  "tabs": {
+    "overview": "आढावा",
+    "spatialView": "स्थानिक दृश्य",
+    "mapInitializing": "जिओस्पेशियल अॅरे प्रारंभ होत आहे",
+    "mapAwating": "अत्यंत तपशीलवार लीफलेट सॅटेलाइट टोपोग्राफीची प्रतीक्षा करत आहे.",
+    "addNewBoundary": "नवीन सीमा पॉलीगॉन जोडा"
+  },
+  "fields": {
+    "yourFields": "तुमची शेती",
+    "selectField": "AI अंदाज आणि उपग्रह डेटा पाहण्यासाठी शेत निवडा.",
+    "noFieldsRegistered": "कोणतेही शेत नोंदणीकृत नाही",
+    "addFieldPrompt": "AI-समर्थित अंतर्दृष्टी आणि अंदाज अनलॉक करण्यासाठी तुमचे पहिले शेत जोडा.",
+    "addField": "शेत जोडा",
+    "delete": "हटवा",
+    "growthPhase": "वाढीचा टप्पा",
+    "setupRequired": "सेटअप आवश्यक (क्षेत्र आणि तारीख)",
+    "added": "जोडले"
+  },
+  "widgets": {
+    "localConditions": "स्थानिक परिस्थिती",
+    "rainPossible": "पावसाची शक्यता",
+    "clearSunny": "स्वच्छ आणि सूर्यप्रकाशित",
+    "hum": "आर्द्रता",
+    "min": "किमान",
+    "rain": "पाऊस",
+    "upcomingTasks": "आगामी कृषी कार्ये",
+    "configurePending": "प्रलंबित शेती कॉन्फिगर करा",
+    "immediateSetup": "तात्काळ • सेटअप टप्पा",
+    "field": "शेत:",
+    "cropVarieties": "पिकांचे प्रकार",
+    "aiInsights": "AI अंतर्दृष्टी",
+    "actionRequiredPending": "कृती आवश्यक: तुमच्याकडे {{count}} कॉन्फिगर न केलेले शेत आहे. उत्पन्नाच्या AI अंदाजांसाठी सेटअप पूर्ण करा.",
+    "allFieldsConfigured": "सर्व शेती यशस्वीरित्या कॉन्फिगर केली गेली आहेत आणि उपग्रहाद्वारे त्यावर लक्ष ठेवले जात आहे.",
+    "marketIntelligence": "बाजार बुद्धिमत्ता",
+    "frp": "FRP (सरकारी किमान)",
+    "localMillAvg": "स्थानिक साखर कारखाना सरासरी",
+    "jaggeryRate": "गुळाचा दर (अंदाजे)"
+  },
+  "fieldDetails": {
+    "nav": {
+      "allFields": "← सर्व शेती",
+      "dashboard": "शेत डॅशबोर्ड",
+      "map": "तुमचे शेत नकाशावर पहा",
+      "config": "कॉन्फिगरेशन",
+      "logout": "लॉग आउट"
+    },
+    "header": {
+      "sugarcaneField": "उसाची शेती",
+      "ownedBy": "मालक"
+    },
+    "map": {
+      "title": "तुमचे शेत नकाशावर पहा",
+      "desc": "अचूक क्षेत्रफळ मोजण्यासाठी तुमच्या शेताच्या सीमा काढा."
+    },
+    "config": {
+      "title": "शेती कॉन्फिगरेशन",
+      "desc": "अचूक उत्पन्नाच्या अंदाजांसाठी तुमचे पीक तपशील (माती, हंगाम, प्रकार) येथे सेट करा.",
+      "taluka": "तालुका",
+      "selectTaluka": "तालुका निवडा",
+      "orAutoDetect": "किंवा स्वयंचलितपणे शोधण्यासाठी नकाशा चिन्हावर क्लिक करा.",
+      "season": "हंगाम",
+      "selectSeason": "हंगाम निवडा",
+      "variety": "उसाची जात",
+      "selectVariety": "जात निवडा",
+      "soilType": "मातीचा प्रकार",
+      "selectSoilType": "मातीचा प्रकार निवडा",
+      "irrigationMethod": "सिंचन पद्धत",
+      "selectMethod": "पद्धत निवडा",
+      "plantingDate": "लागवडीची तारीख",
+      "fieldArea": "शेतीचे क्षेत्र (एकर)",
+      "saveBtn": "कॉन्फिगरेशन जतन करा",
+      "savingBtn": "जतन करत आहे..."
+    },
+    "prediction": {
+      "setupRequired": "सेटअप आवश्यक ⚠️",
+      "goToConfig": "फील्ड तपशील पूर्ण करण्यासाठी कॉन्फिगरेशन टॅबवर जा.",
+      "fieldIntelligence": "फील्ड बुद्धिमत्ता",
+      "cropAge": "पिकाचे वय: {{age}} दिवस",
+      "yieldPotential": "उत्पन्न क्षमता",
+      "analyzing": "विश्लेषण करत आहे...",
+      "tonsPerAcre": "टन / एकर",
+      "vsRegionalAvg": "प्रादेशिक सरासरीच्या तुलनेत",
+      "predictedPrice": "अंदाजित बाजार भाव",
+      "perTon": "/ टन",
+      "estRevenue": "अंदाजित एकूण उत्पन्न",
+      "expectedHarvest": "अपेक्षित पीक",
+      "tons": "टन",
+      "forAcres": "{{acres}} एकरसाठी",
+      "optimalHarvestDate": "काढणीची योग्य तारीख",
+      "days": "दिवस",
+      "moistureRisk": "आर्द्रता धोका",
+      "avgRainfall": "सरासरी पाऊस",
+      "mm": "मिमी",
+      "regionalAverage": "प्रादेशिक सरासरी",
+      "regionalHistory": "प्रादेशिक कामगिरीचा इतिहास",
+      "trendsDesc": "{{taluka}} साठी 5-वर्षांचे उत्पन्न आणि किमतीचे ट्रेंड",
+      "yieldLabel": "उत्पन्न",
+      "priceLabel": "किंमत",
+      "chartYield": "उत्पन्न (टन/एकर)",
+      "chartPrice": "किंमत (₹/टन)"
+    }
+  }
+}

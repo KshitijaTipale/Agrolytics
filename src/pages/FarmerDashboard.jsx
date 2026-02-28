@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
 import AddFieldModal from '../components/AddFieldModal'
 import ConfirmModal from '../components/ConfirmModal'
+import { useTranslation } from 'react-i18next'
+import LanguageToggle from '../components/LanguageToggle'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import talukaStats from '../data/taluka_stats.json'
 import {
@@ -19,6 +21,7 @@ const initialTelemetry = [
 ];
 
 const FarmerDashboard = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [fields, setFields] = useState([])
@@ -258,25 +261,26 @@ const FarmerDashboard = () => {
             <img src="/agrolytics.png" alt="Logo" className="dash-logo" />
             <div className="dash-greeting-box">
               <span className="dash-date">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
-              <h1 className="dash-welcome">Welcome back, {farmerName} <span className="wave">👋</span></h1>
+              <h1 className="dash-welcome">{t('header.welcomeBack')}, {farmerName} <span className="wave">👋</span></h1>
             </div>
           </div>
 
           <div className="dash-header-actions">
 
             {/* WhatsApp Alert Mock Toggle */}
+            <LanguageToggle />
             <div className={`dash-notify-toggle ${notificationsEnabled ? 'on' : 'off'}`} onClick={() => setNotificationsEnabled(!notificationsEnabled)}>
               <Smartphone size={16} />
-              <span>{notificationsEnabled ? 'SMS Alerts On' : 'SMS Alerts Off'}</span>
+              <span>{notificationsEnabled ? t('header.smsAlertsOn') : t('header.smsAlertsOff')}</span>
               {notificationsEnabled && <BellRing size={14} className="ring-anim" />}
             </div>
 
             <div className="dash-system-status">
               <ShieldCheck size={18} color="#10b981" />
-              <span>System Secure & Active</span>
+              <span>{t('header.systemSecure')}</span>
             </div>
             <button onClick={handleLogout} className="dash-logout-btn">
-              Logout
+              {t('header.logout')}
             </button>
           </div>
         </header>
@@ -284,7 +288,7 @@ const FarmerDashboard = () => {
         {loading ? (
           <div className="dash-loading-state">
             <Sprout className="spin-slow" size={40} color="#10b981" />
-            <p>Loading your farm data...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           <div className="dash-main-layout">
@@ -299,7 +303,7 @@ const FarmerDashboard = () => {
                     <LayoutGrid size={24} color="#60a5fa" />
                   </div>
                   <div>
-                    <p className="stat-label">Total Fields</p>
+                    <p className="stat-label">{t('stats.totalFields')}</p>
                     <h2 className="stat-value">{totalFields}</h2>
                   </div>
                 </div>
@@ -309,7 +313,7 @@ const FarmerDashboard = () => {
                     <Activity size={24} color="#34d399" />
                   </div>
                   <div>
-                    <p className="stat-label">AI Monitored</p>
+                    <p className="stat-label">{t('stats.aiMonitored')}</p>
                     <h2 className="stat-value">{configuredFieldsCount} <span className="stat-sub">/ {totalFields}</span></h2>
                   </div>
                 </div>
@@ -319,7 +323,7 @@ const FarmerDashboard = () => {
                     <AlertCircle size={24} color="#fbbf24" />
                   </div>
                   <div>
-                    <p className="stat-label">Action Needed</p>
+                    <p className="stat-label">{t('stats.actionNeeded')}</p>
                     <h2 className="stat-value" style={{ color: pendingFields.length > 0 ? '#fbbf24' : 'inherit' }}>{pendingFields.length}</h2>
                   </div>
                 </div>
@@ -331,14 +335,9 @@ const FarmerDashboard = () => {
                   className={`dash-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
                   onClick={() => setActiveTab('dashboard')}
                 >
-                  <LayoutGrid size={16} /> Overview
+                  <LayoutGrid size={16} /> {t('tabs.overview')}
                 </button>
-                <button
-                  className={`dash-tab ${activeTab === 'map' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('map')}
-                >
-                  <Layers size={16} /> Spatial View
-                </button>
+                
               </div>
 
               {activeTab === 'dashboard' && (
@@ -346,8 +345,8 @@ const FarmerDashboard = () => {
                   {/* FIELDS TITLE AREA */}
                   <div className="dash-section-header">
                     <div>
-                      <h2 className="dash-section-title">Your Fields</h2>
-                      <p className="dash-section-sub">Select a field to view AI predictions and satellite data.</p>
+                      <h2 className="dash-section-title">{t('fields.yourFields')}</h2>
+                      <p className="dash-section-sub">{t('fields.selectField')}</p>
                     </div>
                   </div>
 
@@ -356,10 +355,10 @@ const FarmerDashboard = () => {
                     {fields.length === 0 ? (
                       <div className="dash-empty-state">
                         <div className="empty-icon-circle"><Leaf size={40} color="#10b981" /></div>
-                        <h3>No Fields Registered</h3>
-                        <p>Add your first field to unlock AI-powered insights and predictions.</p>
+                        <h3>{t('fields.noFieldsRegistered')}</h3>
+                        <p>{t('fields.addFieldPrompt')}</p>
                         <button onClick={() => setIsModalOpen(true)} className="dash-btn-primary mt-4">
-                          <Plus size={18} /> Add Field
+                          <Plus size={18} /> {t('fields.addField')}
                         </button>
                       </div>
                     ) : (
@@ -395,7 +394,7 @@ const FarmerDashboard = () => {
                                       className="dropdown-action-del"
                                       onClick={(e) => confirmDelete(field.id, e)}
                                     >
-                                      <Trash2 size={16} /> Delete
+                                      <Trash2 size={16} /> {t('fields.delete')}
                                     </button>
                                   </div>
                                 )}
@@ -406,7 +405,7 @@ const FarmerDashboard = () => {
                               {isConfigured ? (
                                 <div className="progress-container">
                                   <div className="progress-header">
-                                    <span className="prog-label">Growth Phase</span>
+                                    <span className="prog-label">{t('fields.growthPhase')}</span>
                                     <span className="prog-val">{progress}%</span>
                                   </div>
                                   <div className="progress-bar-bg">
@@ -415,13 +414,13 @@ const FarmerDashboard = () => {
                                 </div>
                               ) : (
                                 <div className="action-required-alert">
-                                  <AlertCircle size={14} /> Setup Required (Area & Date)
+                                  <AlertCircle size={14} /> {t('fields.setupRequired')}
                                 </div>
                               )}
                             </div>
 
                             <div className="card-bottom-row">
-                              <span className="card-date-added">Added {new Date(field.created_at).toLocaleDateString()}</span>
+                              <span className="card-date-added">{t('fields.added')} {new Date(field.created_at).toLocaleDateString()}</span>
                               <div className="card-arrow"><ArrowRight size={18} /></div>
                             </div>
                           </div>
@@ -436,10 +435,10 @@ const FarmerDashboard = () => {
                 <div className="map-placeholder-container">
                   <div className="map-overlay-glow"></div>
                   <MapPin size={48} color="#10b981" className="bounce-anim" style={{ marginBottom: '1rem' }} />
-                  <h3>Geospatial Array Initializing</h3>
-                  <p>Awaiting highly detailed Leaflet satellite topography.</p>
+                  <h3>{t('tabs.mapInitializing')}</h3>
+                  <p>{t('tabs.mapAwating')}</p>
                   <button onClick={() => setIsModalOpen(true)} className="dash-btn-outline mt-3">
-                    Add New Boundary Polygon
+                    {t('tabs.addNewBoundary')}
                   </button>
                 </div>
               )}
@@ -451,7 +450,7 @@ const FarmerDashboard = () => {
               {/* WEATHER WIDGET (Dynamic) */}
               <div className="dash-widget weather-widget">
                 <div className="widget-header">
-                  <h3 className="widget-title">Local Conditions</h3>
+                  <h3 className="widget-title">{t('widgets.localConditions')}</h3>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#94a3b8', fontSize: '0.85rem' }}>
                     <MapPin size={14} /> {weatherTaluka}
                   </div>
@@ -460,17 +459,17 @@ const FarmerDashboard = () => {
                   <Sun size={48} color="#fbbf24" strokeWidth={1.5} className="weather-icon-anim" />
                   <div>
                     <h2 className="weather-temp">{liveWeather ? Math.round(liveWeather.temperature_2m) : weatherStats.avgMaxTemp}°C</h2>
-                    <p className="weather-desc">{liveWeather?.precipitation > 0 ? "Rain Possible" : "Clear & Sunny"}</p>
+                    <p className="weather-desc">{liveWeather?.precipitation > 0 ? t('widgets.rainPossible') : t('widgets.clearSunny')}</p>
                   </div>
                 </div>
                 <div className="weather-details-grid">
                   <div className="weather-detail-item">
                     <Droplets size={16} color="#60a5fa" />
-                    <span>{liveWeather ? liveWeather.relative_humidity_2m : weatherStats.avgHumidity}% Hum</span>
+                    <span>{liveWeather ? liveWeather.relative_humidity_2m : weatherStats.avgHumidity}% {t('widgets.hum')}</span>
                   </div>
                   <div className="weather-detail-item">
                     <Thermometer size={16} color="#f87171" />
-                    <span>{weatherStats.avgMinTemp}°C Min</span>
+                    <span>{weatherStats.avgMinTemp}°C {t('widgets.min')}</span>
                   </div>
                   <div className="weather-detail-item">
                     <Wind size={16} color="#94a3b8" />
@@ -478,7 +477,7 @@ const FarmerDashboard = () => {
                   </div>
                   <div className="weather-detail-item">
                     <CloudRain size={16} color="#60a5fa" />
-                    <span>{liveWeather ? liveWeather.precipitation : weatherStats.avgRainfall}mm Rain</span>
+                    <span>{liveWeather ? liveWeather.precipitation : weatherStats.avgRainfall}mm {t('widgets.rain')}</span>
                   </div>
                 </div>
               </div>
@@ -487,15 +486,15 @@ const FarmerDashboard = () => {
               {(topTasks.length > 0 || pendingFields.length > 0) && (
                 <div className="dash-widget todo-widget">
                   <div className="widget-header">
-                    <h3 className="widget-title"><Clock size={16} color="#fbbf24" /> Upcoming Agronomic Tasks</h3>
+                    <h3 className="widget-title"><Clock size={16} color="#fbbf24" /> {t('widgets.upcomingTasks')}</h3>
                   </div>
                   <div className="task-list">
                     {pendingFields.length > 0 && (
                       <div className="task-item high-priority">
                         <div className="task-check"><AlertCircle size={14} color="#fbbf24" /></div>
                         <div className="task-content">
-                          <h4>Configure Pending Fields</h4>
-                          <span>Immediate • Setup Phase</span>
+                          <h4>{t('widgets.configurePending')}</h4>
+                          <span>{t('widgets.immediateSetup')}</span>
                         </div>
                       </div>
                     )}
@@ -505,7 +504,7 @@ const FarmerDashboard = () => {
                         <div className="task-check"><CheckCircle2 size={14} color={task.priority === 'high' ? '#f87171' : '#10b981'} /></div>
                         <div className="task-content">
                           <h4>{task.task}</h4>
-                          <span>{task.time} • Field: {task.field}</span>
+                          <span>{task.time} • {t('widgets.field')} {task.field}</span>
                         </div>
                       </div>
                     ))}
@@ -517,7 +516,7 @@ const FarmerDashboard = () => {
               {chartData.length > 0 && (
                 <div className="dash-widget chart-widget">
                   <div className="widget-header">
-                    <h3 className="widget-title"><BarChart2 size={16} color="#10b981" /> Crop Varieties</h3>
+                    <h3 className="widget-title"><BarChart2 size={16} color="#10b981" /> {t('widgets.cropVarieties')}</h3>
                   </div>
                   <div style={{ width: '100%', height: 180, marginTop: '1rem' }}>
                     <ResponsiveContainer>
@@ -557,18 +556,18 @@ const FarmerDashboard = () => {
               {/* INSIGHTS PANEL (Dynamic) */}
               <div className="dash-widget insights-widget">
                 <div className="widget-header">
-                  <h3 className="widget-title"><BrainCircuit size={18} color="#a78bfa" /> AI Insights</h3>
+                  <h3 className="widget-title"><BrainCircuit size={18} color="#a78bfa" /> {t('widgets.aiInsights')}</h3>
                 </div>
                 <div className="insights-list">
                   {pendingFields.length > 0 ? (
                     <div className="insight-item warning-insight">
                       <div className="insight-icon"><AlertCircle size={16} /></div>
-                      <p><b>Action Required:</b> You have {pendingFields.length} unconfigured field(s). Complete setup to unlock yield AI predictions.</p>
+                      <p>{t('widgets.actionRequiredPending', { count: pendingFields.length })}</p>
                     </div>
                   ) : (
                     <div className="insight-item success-insight">
                       <div className="insight-icon"><CheckCircle2 size={16} /></div>
-                      <p>All fields are successfully configured and being monitored by satellite.</p>
+                      <p>{t('widgets.allFieldsConfigured')}</p>
                     </div>
                   )}
 
@@ -616,24 +615,7 @@ const FarmerDashboard = () => {
                 </div>
               </div>
 
-              {/* MARKET TRENDS WIDGET */}
-              <div className="dash-widget market-widget">
-                <div className="widget-header">
-                  <h3 className="widget-title"><TrendingUp size={16} color="#3b82f6" /> Market Intelligence</h3>
-                </div>
-                <div className="market-row">
-                  <span className="market-label">FRP (Gov. Minimum)</span>
-                  <span className="market-price">₹ 3,400 <small>/ tn</small></span>
-                </div>
-                <div className="market-row">
-                  <span className="market-label">Local Sugar Mill Avg</span>
-                  <span className="market-price up">₹ 3,550 <small>▲ +2%</small></span>
-                </div>
-                <div className="market-row">
-                  <span className="market-label">Jaggery Rate (Est)</span>
-                  <span className="market-price">₹ 4,100 <small>--</small></span>
-                </div>
-              </div>
+              
 
             </div>
 

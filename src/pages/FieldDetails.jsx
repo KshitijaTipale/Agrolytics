@@ -4,8 +4,11 @@ import { supabase } from '../supabase'
 import FieldConfigurationForm from '../components/FieldConfigurationForm'
 import PredictionPanel from '../components/PredictionPanel'
 import FieldMap from '../components/FieldMap'
+import { useTranslation } from 'react-i18next'
+import LanguageToggle from '../components/LanguageToggle'
 
 const FieldDetails = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
   const navigate = useNavigate()
   
@@ -20,10 +23,10 @@ const FieldDetails = () => {
   
   // Navigation Items
   const navItems = [
-    { id: 'main-menu', label: '← All Fields', path: '/farmer' },
-    { id: 'dashboard', label: 'Field Dashboard', onClick: () => setActiveTab('dashboard'), active: activeTab === 'dashboard' },
-    { id: 'map', label: 'Map Your Field', onClick: () => setActiveTab('map'), active: activeTab === 'map' },
-    { id: 'details', label: 'Configuration', onClick: () => setActiveTab('details'), active: activeTab === 'details' },
+    { id: 'main-menu', label: t('fieldDetails.nav.allFields'), path: '/farmer' },
+    { id: 'dashboard', label: t('fieldDetails.nav.dashboard'), onClick: () => setActiveTab('dashboard'), active: activeTab === 'dashboard' },
+    { id: 'map', label: t('fieldDetails.nav.map'), onClick: () => setActiveTab('map'), active: activeTab === 'map' },
+    { id: 'details', label: t('fieldDetails.nav.config'), onClick: () => setActiveTab('details'), active: activeTab === 'details' },
   ]
 
   useEffect(() => {
@@ -174,7 +177,7 @@ const FieldDetails = () => {
   }
 
   if (loading) {
-      return <div className="loading-screen">Loading Field Details...</div>
+      return <div className="loading-screen">{t('loading')}</div>
   }
 
   if (!field) {
@@ -215,7 +218,7 @@ const FieldDetails = () => {
             ))}
             
             <button onClick={handleLogout} className="nav-item logout">
-                Logout
+                {t('fieldDetails.nav.logout')}
             </button>
         </nav>
       </aside>
@@ -226,13 +229,14 @@ const FieldDetails = () => {
             <div className="header-bg-glow"></div>
             <div className="header-content-flex">
                 <div className="header-left">
-                   <div className="field-badge">Sugarcane Field</div>
+                   <div className="field-badge">{t('fieldDetails.header.sugarcaneField')}</div>
                    <h1 className="field-title">{field.name}</h1>
                 </div>
                 
-                <div className="header-right">
+                <div className="header-right" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                   <LanguageToggle />
                    <div className="owner-card">
-                       <span className="owner-label">Owned By</span>
+                       <span className="owner-label">{t('fieldDetails.header.ownedBy')}</span>
                        <div className="owner-info">
                            <div className="avatar-circle">{farmerName.charAt(0).toUpperCase()}</div>
                            <span className="owner-name">{farmerName}</span>
@@ -251,9 +255,9 @@ const FieldDetails = () => {
             ) : activeTab === 'map' ? (
                 /* Map View */
                 <div className="bento-section-card" style={{ height: '800px', display: 'flex', flexDirection: 'column' }}>
-                    <h3>Map Your Field</h3>
+                    <h3>{t('fieldDetails.map.title')}</h3>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                        Draw your field boundaries to calculate exact acreage.
+                        {t('fieldDetails.map.desc')}
                     </p>
                     <FieldMap 
                         initialCoordinates={field.coordinates} 
@@ -264,9 +268,9 @@ const FieldDetails = () => {
             ) : (
                 /* Configuration View */
                 <div className="bento-section-card details-card">
-                    <h3>Farm Configuration</h3>
+                    <h3>{t('fieldDetails.config.title')}</h3>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', marginTop: '0.5rem' }}>
-                        Setup your crop details (Soil, Season, Variety) here to enable accurate yield predictions.
+                        {t('fieldDetails.config.desc')}
                     </p>
                     
                     <FieldConfigurationForm 
