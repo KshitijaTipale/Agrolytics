@@ -1,0 +1,11 @@
+Taluka,Season,Cane_Variety,Soil_Type,Irrigation_Method,Harvest_Year,Avg_NDVI,Avg_EVI,Avg_LST_Celsius,Avg_Max_Temp_Celsius,Avg_Min_Temp_Celsius,Solar_Radiation_kWh,Avg_Humidity_Percent,Accumulated_Rainfall_mm
+Shevgaon,Suru,CoM 0265,Clay Loam,Flood,2021,0.417,0.334,31.7,33.0,16.0,6.36,71.7,488.5
+Sangamner,Suru,Co 86032,Black Cotton,Flood,2021,0.568,0.532,33.9,35.6,18.4,6.72,62.4,522.7
+Parner,Suru,Co 86032,Medium Black,Flood,2021,0.735,0.483,35.1,37.3,15.3,6.76,83.7,505.6
+Karjat,Adsali,Co 86032,Sandy Loam,Flood,2023,0.799,0.599,30.5,32.9,22.4,5.22,65.1,433.5
+Sangamner,Suru,Co 92005,Black Cotton,Rainfed,2022,0.477,0.339,36.4,37.8,20.8,6.5,62.9,654.9
+Nevasa,Pre-seasonal,VSI 434,Black Cotton,Rainfed,2023,0.59,0.438,28.0,29.8,21.9,5.66,58.2,583.9
+Rahuri,Suru,Co 92005,Black Cotton,Rainfed,2020,0.458,0.324,35.4,36.8,19.4,6.47,48.0,507.9
+Shrigonda,Pre-seasonal,Co 92005,Medium Black,Drip,2023,0.752,0.639,30.9,33.2,18.7,5.19,63.4,519.1
+Akole,Adsali,Co 86032,Sandy Loam,Flood,2023,0.835,0.675,28.2,30.8,18.4,4.3,95.0,987.7
+Ahmednagar,Suru,CoM 0265,Sandy Loam,Drip,2019,0.776,0.65,31.0,33.3,15.7,5.94,68.9,594.5
