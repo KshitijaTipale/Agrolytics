@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
 import AddFieldModal from '../components/AddFieldModal'
 import ConfirmModal from '../components/ConfirmModal'
+import AgroChat from '../components/AgroChat'
 import { useTranslation } from 'react-i18next'
 import LanguageToggle from '../components/LanguageToggle'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
@@ -428,7 +429,7 @@ const FarmerDashboard = () => {
                 >
                   <LayoutGrid size={16} /> {t('tabs.overview')}
                 </button>
-                
+
               </div>
 
               {activeTab === 'dashboard' && (
@@ -620,7 +621,7 @@ const FarmerDashboard = () => {
                 </div>
               </div>
 
-              
+
 
             </div>
 
@@ -649,6 +650,9 @@ const FarmerDashboard = () => {
         onClose={() => setDeleteConfirmId(null)}
         onConfirm={performDelete}
       />
+
+      {/* AI Chatbot - always mounted, floating */}
+      <AgroChat />
 
       <style>{`
         /* --- DASHBOARD LIGHT THEME ROOT --- */

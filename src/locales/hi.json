@@ -1,0 +1,117 @@
+{
+    "header": {
+        "welcomeBack": "वापस स्वागत है",
+        "smsAlertsOn": "SMS अलर्ट चालू",
+        "smsAlertsOff": "SMS अलर्ट बंद",
+        "systemSecure": "सिस्टम सुरक्षित और सक्रिय",
+        "logout": "लॉग आउट"
+    },
+    "loading": "आपका खेत डेटा लोड हो रहा है...",
+    "stats": {
+        "totalFields": "कुल खेत",
+        "aiMonitored": "AI द्वारा निगरानी",
+        "actionNeeded": "कार्रवाई आवश्यक"
+    },
+    "tabs": {
+        "overview": "अवलोकन",
+        "spatialView": "स्थानिक दृश्य",
+        "mapInitializing": "जियोस्पेशियल ऐरे प्रारंभ हो रहा है",
+        "mapAwating": "विस्तृत लीफलेट सैटेलाइट टोपोग्राफी की प्रतीक्षा है।",
+        "addNewBoundary": "नया सीमा बहुभुज जोड़ें"
+    },
+    "fields": {
+        "yourFields": "आपके खेत",
+        "selectField": "AI पूर्वानुमान और उपग्रह डेटा देखने के लिए खेत चुनें।",
+        "noFieldsRegistered": "कोई खेत पंजीकृत नहीं",
+        "addFieldPrompt": "AI-संचालित अंतर्दृष्टि और भविष्यवाणियों को अनलॉक करने के लिए अपना पहला खेत जोड़ें।",
+        "addField": "खेत जोड़ें",
+        "delete": "हटाएं",
+        "growthPhase": "विकास चरण",
+        "setupRequired": "सेटअप आवश्यक (क्षेत्र और तिथि)",
+        "added": "जोड़ा"
+    },
+    "widgets": {
+        "localConditions": "स्थानीय परिस्थितियाँ",
+        "rainPossible": "बारिश संभव",
+        "clearSunny": "साफ और धूप",
+        "hum": "आर्द्रता",
+        "min": "न्यूनतम",
+        "rain": "वर्षा",
+        "upcomingTasks": "आगामी कृषि कार्य",
+        "configurePending": "लंबित खेत कॉन्फ़िगर करें",
+        "immediateSetup": "तत्काल • सेटअप चरण",
+        "field": "खेत:",
+        "cropVarieties": "फसल किस्में",
+        "aiInsights": "AI अंतर्दृष्टि",
+        "actionRequiredPending": "कार्रवाई आवश्यक: आपके पास {{count}} अनकॉन्फ़िगर खेत हैं। उपज AI भविष्यवाणियों के लिए सेटअप पूर्ण करें।",
+        "allFieldsConfigured": "सभी खेत सफलतापूर्वक कॉन्फ़िगर किए गए हैं और उपग्रह द्वारा निगरानी की जा रही है।",
+        "marketIntelligence": "बाजार बुद्धिमत्ता",
+        "frp": "FRP (सरकारी न्यूनतम)",
+        "localMillAvg": "स्थानीय चीनी मिल औसत",
+        "jaggeryRate": "गुड़ दर (अनुमानित)"
+    },
+    "fieldDetails": {
+        "nav": {
+            "allFields": "← सभी खेत",
+            "dashboard": "खेत डैशबोर्ड",
+            "map": "खेत का नक्शा",
+            "config": "कॉन्फ़िगरेशन",
+            "logout": "लॉग आउट"
+        },
+        "header": {
+            "sugarcaneField": "गन्ने का खेत",
+            "ownedBy": "स्वामित्व"
+        },
+        "map": {
+            "title": "खेत का नक्शा बनाएं",
+            "desc": "सटीक क्षेत्रफल की गणना के लिए खेत की सीमाएं खींचें।"
+        },
+        "config": {
+            "title": "खेत कॉन्फ़िगरेशन",
+            "desc": "सटीक उपज भविष्यवाणियों के लिए अपनी फसल विवरण (मिट्टी, मौसम, किस्म) यहाँ सेट करें।",
+            "taluka": "तालुका",
+            "selectTaluka": "तालुका चुनें",
+            "orAutoDetect": "या स्वचालित पहचान के लिए नक्शा आइकन पर क्लिक करें।",
+            "season": "मौसम",
+            "selectSeason": "मौसम चुनें",
+            "variety": "गन्ने की किस्म",
+            "selectVariety": "किस्म चुनें",
+            "soilType": "मिट्टी का प्रकार",
+            "selectSoilType": "मिट्टी का प्रकार चुनें",
+            "irrigationMethod": "सिंचाई विधि",
+            "selectMethod": "विधि चुनें",
+            "plantingDate": "बुवाई की तिथि",
+            "fieldArea": "खेत का क्षेत्रफल (एकड़)",
+            "saveBtn": "कॉन्फ़िगरेशन सहेजें",
+            "savingBtn": "सहेज रहे हैं..."
+        },
+        "prediction": {
+            "setupRequired": "सेटअप आवश्यक ⚠️",
+            "goToConfig": "खेत विवरण पूर्ण करने के लिए कॉन्फ़िगरेशन टैब पर जाएं।",
+            "fieldIntelligence": "खेत बुद्धिमत्ता",
+            "cropAge": "फसल आयु: {{age}} दिन",
+            "yieldPotential": "उपज क्षमता",
+            "analyzing": "विश्लेषण हो रहा है...",
+            "tonsPerAcre": "टन / एकड़",
+            "vsRegionalAvg": "क्षेत्रीय औसत से",
+            "predictedPrice": "अनुमानित बाजार मूल्य",
+            "perTon": "/ टन",
+            "estRevenue": "अनुमानित कुल आय",
+            "expectedHarvest": "अपेक्षित फसल",
+            "tons": "टन",
+            "forAcres": "{{acres}} एकड़ के लिए",
+            "optimalHarvestDate": "इष्टतम कटाई तिथि",
+            "days": "दिन",
+            "moistureRisk": "नमी जोखिम",
+            "avgRainfall": "औसत वर्षा",
+            "mm": "मिमी",
+            "regionalAverage": "क्षेत्रीय औसत",
+            "regionalHistory": "क्षेत्रीय प्रदर्शन इतिहास",
+            "trendsDesc": "{{taluka}} के लिए 5 वर्ष की उपज और मूल्य प्रवृत्तियाँ",
+            "yieldLabel": "उपज",
+            "priceLabel": "मूल्य",
+            "chartYield": "उपज (टन/एकड़)",
+            "chartPrice": "मूल्य (₹/टन)"
+        }
+    }
+}
