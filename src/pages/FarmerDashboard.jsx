@@ -329,6 +329,97 @@ const FarmerDashboard = () => {
                 </div>
               </div>
 
+              {/* MID ROW: Insights & Chart */}
+              <div className="dash-mid-row">
+                {/* INSIGHTS PANEL (Dynamic) */}
+                <div className="dash-widget insights-widget" style={{ marginBottom: 0, height: 'auto', display: 'flex', flexDirection: 'column' }}>
+                  <div className="widget-header">
+                    <h3 className="widget-title"><BrainCircuit size={18} color="#a78bfa" /> {t('widgets.aiInsights')}</h3>
+                  </div>
+                  <div className="insights-list" style={{ flex: 1 }}>
+                    {pendingFields.length > 0 ? (
+                      <div className="insight-item warning-insight">
+                        <div className="insight-icon"><AlertCircle size={16} /></div>
+                        <p>{t('widgets.actionRequiredPending', { count: pendingFields.length })}</p>
+                      </div>
+                    ) : (
+                      <div className="insight-item success-insight">
+                        <div className="insight-icon"><CheckCircle2 size={16} /></div>
+                        <p>{t('widgets.allFieldsConfigured')}</p>
+                      </div>
+                    )}
+
+                    {/* Dynamic AI insights based on active fields */}
+                    {totalFields > 0 && configuredFieldsCount > 0 && fields.slice(0, 2).map((field, idx) => {
+                      const prog = getProgress(field);
+                      if (prog < 20) {
+                        return (
+                          <div key={idx} className="insight-item info-insight">
+                            <div className="insight-icon"><Droplets size={16} color="#3b82f6" /></div>
+                            <p><b>{field.name}</b>: Germination phase detected. Maintain optimal soil moisture for next 15 days.</p>
+                          </div>
+                        );
+                      } else if (prog >= 20 && prog < 90) {
+                        return (
+                          <div key={idx} className="insight-item info-insight">
+                            <div className="insight-icon"><Activity size={16} color="#10b981" /></div>
+                            <p><b>{field.name}</b>: NDVI satellite imagery indicates healthy rapid growth phase. Fertilizer window optimal.</p>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div key={idx} className="insight-item info-insight" style={{ background: 'rgba(245, 158, 11, 0.1)', borderLeft: '3px solid #f59e0b' }}>
+                            <div className="insight-icon"><Calendar size={16} color="#f59e0b" /></div>
+                            <p><b>{field.name}</b>: <b>Harvest Ready!</b> Crop maturity over 90%. Schedule machinery and check mill capacity.</p>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+
+                {/* CHART WIDGET (Recharts) */}
+                {chartData.length > 0 && (
+                  <div className="dash-widget chart-widget" style={{ marginBottom: 0, height: 'auto', display: 'flex', flexDirection: 'column' }}>
+                    <div className="widget-header">
+                      <h3 className="widget-title"><BarChart2 size={16} color="#10b981" /> {t('widgets.cropVarieties')}</h3>
+                    </div>
+                    <div style={{ width: '100%', height: 180, marginTop: '1rem', flex: 1 }}>
+                      <ResponsiveContainer>
+                        <PieChart>
+                          <Pie
+                            data={chartData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={50}
+                            outerRadius={75}
+                            paddingAngle={5}
+                            dataKey="value"
+                            stroke="none"
+                          >
+                            {chartData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                            ))}
+                          </Pie>
+                          <Tooltip
+                            contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', color: '#0f172a', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' }}
+                            itemStyle={{ color: '#0f172a', fontWeight: 500 }}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="chart-legend" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', justifyContent: 'center', marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                      {chartData.map((entry, index) => (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <div style={{ width: 10, height: 10, borderRadius: '50%', background: CHART_COLORS[index % CHART_COLORS.length] }}></div>
+                          <span style={{ color: '#94a3b8' }}>{entry.name} ({entry.value})</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* NAVIGATION / TABS */}
               <div className="dash-tabs-container">
                 <button
@@ -512,93 +603,7 @@ const FarmerDashboard = () => {
                 </div>
               )}
 
-              {/* CHART WIDGET (Recharts) */}
-              {chartData.length > 0 && (
-                <div className="dash-widget chart-widget">
-                  <div className="widget-header">
-                    <h3 className="widget-title"><BarChart2 size={16} color="#10b981" /> {t('widgets.cropVarieties')}</h3>
-                  </div>
-                  <div style={{ width: '100%', height: 180, marginTop: '1rem' }}>
-                    <ResponsiveContainer>
-                      <PieChart>
-                        <Pie
-                          data={chartData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={50}
-                          outerRadius={75}
-                          paddingAngle={5}
-                          dataKey="value"
-                          stroke="none"
-                        >
-                          {chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip
-                          contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', color: '#0f172a', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' }}
-                          itemStyle={{ color: '#0f172a', fontWeight: 500 }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="chart-legend" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', justifyContent: 'center', marginTop: '0.5rem', fontSize: '0.85rem' }}>
-                    {chartData.map((entry, index) => (
-                      <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <div style={{ width: 10, height: 10, borderRadius: '50%', background: CHART_COLORS[index % CHART_COLORS.length] }}></div>
-                        <span style={{ color: '#94a3b8' }}>{entry.name} ({entry.value})</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
-              {/* INSIGHTS PANEL (Dynamic) */}
-              <div className="dash-widget insights-widget">
-                <div className="widget-header">
-                  <h3 className="widget-title"><BrainCircuit size={18} color="#a78bfa" /> {t('widgets.aiInsights')}</h3>
-                </div>
-                <div className="insights-list">
-                  {pendingFields.length > 0 ? (
-                    <div className="insight-item warning-insight">
-                      <div className="insight-icon"><AlertCircle size={16} /></div>
-                      <p>{t('widgets.actionRequiredPending', { count: pendingFields.length })}</p>
-                    </div>
-                  ) : (
-                    <div className="insight-item success-insight">
-                      <div className="insight-icon"><CheckCircle2 size={16} /></div>
-                      <p>{t('widgets.allFieldsConfigured')}</p>
-                    </div>
-                  )}
-
-                  {/* Dynamic AI insights based on active fields */}
-                  {totalFields > 0 && configuredFieldsCount > 0 && fields.slice(0, 2).map((field, idx) => {
-                    const prog = getProgress(field);
-                    if (prog < 20) {
-                      return (
-                        <div key={idx} className="insight-item info-insight">
-                          <div className="insight-icon"><Droplets size={16} color="#3b82f6" /></div>
-                          <p><b>{field.name}</b>: Germination phase detected. Maintain optimal soil moisture for next 15 days.</p>
-                        </div>
-                      );
-                    } else if (prog >= 20 && prog < 90) {
-                      return (
-                        <div key={idx} className="insight-item info-insight">
-                          <div className="insight-icon"><Activity size={16} color="#10b981" /></div>
-                          <p><b>{field.name}</b>: NDVI satellite imagery indicates healthy rapid growth phase. Fertilizer window optimal.</p>
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div key={idx} className="insight-item info-insight" style={{ background: 'rgba(245, 158, 11, 0.1)', borderLeft: '3px solid #f59e0b' }}>
-                          <div className="insight-icon"><Calendar size={16} color="#f59e0b" /></div>
-                          <p><b>{field.name}</b>: <b>Harvest Ready!</b> Crop maturity over 90%. Schedule machinery and check mill capacity.</p>
-                        </div>
-                      );
-                    }
-                  })}
-                </div>
-              </div>
 
               {/* TELEMETRY WIDGET (Expert Demo) */}
               <div className="dash-widget telemetry-widget">
@@ -790,8 +795,19 @@ const FarmerDashboard = () => {
            gap: 2.5rem;
         }
 
+        .dash-mid-row {
+           display: grid;
+           grid-template-columns: 1.5fr 1fr;
+           gap: 1.5rem;
+           margin-bottom: 2.5rem;
+           align-items: stretch;
+        }
+
         @media (max-width: 1024px) {
            .dash-main-layout {
+               grid-template-columns: 1fr;
+           }
+           .dash-mid-row {
                grid-template-columns: 1fr;
            }
         }
