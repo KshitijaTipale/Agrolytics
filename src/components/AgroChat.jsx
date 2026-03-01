@@ -286,7 +286,7 @@ export default function AgroChat() {
         /* ── FAB ── */
         .agrochat-fab {
           position: fixed;
-          bottom: 2rem;
+          bottom: 6.5rem;
           right: 2rem;
           width: 58px;
           height: 58px;
@@ -324,7 +324,7 @@ export default function AgroChat() {
         /* ── Window ── */
         .agrochat-window {
           position: fixed;
-          bottom: 6rem;
+          bottom: 10.5rem;
           right: 2rem;
           width: 360px;
           max-height: 520px;
@@ -583,11 +583,11 @@ export default function AgroChat() {
             right: 0.75rem;
             left: 0.75rem;
             width: auto;
-            bottom: 5.5rem;
+            bottom: 9.5rem;
           }
           .agrochat-fab {
             right: 1rem;
-            bottom: 1rem;
+            bottom: 5.5rem;
           }
         }
       `}</style>

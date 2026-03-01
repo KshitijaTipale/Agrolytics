@@ -167,7 +167,7 @@ const FactoryDashboard = () => {
       </div>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <select className="select-modern" value={selectedTaluka} onChange={(e) => setSelectedTaluka(e.target.value)}>
-          <option value="All Regions">🌍 All Regions ({Object.values(talukaStats).reduce((s, d) => s + d.fieldCount, 0)} fields)</option>
+          <option value="All Regions">🌍 All Regions</option>
           {talukaNames.map(t => <option key={t} value={t}>📍 {t} ({talukaStats[t].fieldCount} fields)</option>)}
         </select>
         <button onClick={handleLogout} className="action-btn-urgent" style={{ borderColor: 'rgba(239,68,68,0.3)', color: '#ef4444', background: 'rgba(239,68,68,0.1)' }}>Logout</button>
